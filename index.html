@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jaick AI Studio</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#10111b;color:white;
+ font-family:Arial,sans-serif;padding:20px;
+}
+.container{max-width:650px;margin:auto}
+header{text-align:center;padding:25px 10px}
+.logo{font-size:36px;font-weight:bold;color:#a78bfa}
+h1{font-size:27px}
+p{color:#b9bbce}
+.panel{
+ background:#1d2030;padding:20px;
+ border-radius:16px;margin:15px 0;
+}
+label{display:block;margin:15px 0 8px}
+textarea,select{
+ width:100%;padding:13px;border-radius:9px;
+ background:#10111b;color:white;
+ border:1px solid #45485c;font-size:15px;
+}
+textarea{height:100px;resize:vertical}
+button{
+ width:100%;padding:15px;border:0;
+ border-radius:10px;background:#8055ed;
+ color:white;font-size:17px;font-weight:bold;
+ cursor:pointer;margin-top:15px;
+}
+button:hover{background:#6940d0}
+.upload{
+ border:2px dashed #77758f;padding:25px;
+ text-align:center;border-radius:12px;
+}
+img{max-width:100%;max-height:250px;margin-top:15px}
+#status{color:#c4b5fd;text-align:center}
+footer{text-align:center;color:#888;margin:25px}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div class="logo">✦ JAICK AI</div>
+<h1>Jaick AI Studio</h1>
+<p>Your Personal AI Video Maker</p>
+</header>
+
+<div class="panel">
+<h2>🎬 Create Your AI Video</h2>
+
+<label>अपनी फोटो चुनें</label>
+<div class="upload">
+<input type="file" id="photo" accept="image/*">
+<img id="preview" hidden>
+</div>
+
+<label>वीडियो के बारे में लिखें</label>
+<textarea id="prompt" placeholder="जैसे: मेरी फोटो से एक शानदार डांस वीडियो बनाओ..."></textarea>
+
+<label>वीडियो स्टाइल चुनें</label>
+<select id="style">
+<option>Realistic</option>
+<option>Dance</option>
+<option>Cinematic</option>
+<option>3D Animation</option>
+<option>Bollywood</option>
+</select>
+
+<button onclick="generate()">✨ Create AI Video</button>
+<p id="status"></p>
+</div>
+
+<div class="panel">
+<h3>🚀 Jaick AI Features</h3>
+<p>📸 Photo to Video</p>
+<p>✍️ Text to Video</p>
+<p>💃 AI Dance Video</p>
+<p>🎞️ AI Video Editing</p>
+<p>⬇️ Video Export</p>
+</div>
+
+<footer>© 2026 Jaick AI Studio</footer>
+</div>
+
+<script>
+const photo=document.getElementById("photo");
+photo.addEventListener("change",function(){
+ const file=this.files[0];
+ if(file){
+  const preview=document.getElementById("preview");
+  preview.src=URL.createObjectURL(file);
+  preview.hidden=false;
+ }
+});
+
+function generate(){
+ const file=photo.files[0];
+ const prompt=document.getElementById("prompt").value;
+ const status=document.getElementById("status");
+
+ if(!file){
+  status.textContent="पहले अपनी फोटो चुनें।";
+  return;
+ }
+ if(!prompt.trim()){
+  status.textContent="वीडियो का विवरण लिखें।";
+  return;
+ }
+ status.textContent="आपका डिजाइन तैयार है। AI वीडियो बनाने के लिए अगला चरण: AI API कनेक्शन।";
+}
+</script>
+</body>
+</html>
