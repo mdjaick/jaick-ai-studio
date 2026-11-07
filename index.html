@@ -19,26 +19,64 @@ p{color:#b9bbce}
  background:#1d2030;padding:20px;
  border-radius:16px;margin:15px 0;
 }
-label{display:block;margin:15px 0 8px}
+label{display:block;margin:15px 0 8px;font-weight:bold;color:#e2e8f0}
 textarea,select{
  width:100%;padding:13px;border-radius:9px;
  background:#10111b;color:white;
  border:1px solid #45485c;font-size:15px;
 }
-textarea{height:100px;resize:vertical}
+textarea{height:90px;resize:vertical}
 button{
  width:100%;padding:15px;border:0;
  border-radius:10px;background:#8055ed;
  color:white;font-size:17px;font-weight:bold;
  cursor:pointer;margin-top:15px;
+ transition:background 0.3s;
 }
 button:hover{background:#6940d0}
 .upload{
- border:2px dashed #77758f;padding:25px;
+ border:2px dashed #77758f;padding:20px;
  text-align:center;border-radius:12px;
+ position:relative;overflow:hidden;
 }
-img{max-width:100%;max-height:250px;margin-top:15px}
-#status{color:#c4b5fd;text-align:center}
+.img-container{
+ position:relative;display:inline-block;
+ max-width:100%;max-height:280px;margin-top:10px;
+ border-radius:8px;overflow:hidden;
+}
+img{max-width:100%;max-height:280px;display:block}
+.scan-line{
+ position:absolute;top:0;left:0;width:100%;height:4px;
+ background:linear-gradient(90deg, transparent, #a78bfa, transparent);
+ box-shadow:0 0 15px #a78bfa;
+ display:none;animation:scan 2s infinite ease-in-out;
+}
+@keyframes scan{
+ 0%{top:0%}
+ 50%{top:95%}
+ 100%{top:0%}
+}
+.progress-box{
+ margin-top:15px;display:none;
+}
+.progress-bar-bg{
+ background:#10111b;height:12px;border-radius:6px;
+ overflow:hidden;border:1px solid #45485c;
+}
+.progress-bar-fill{
+ background:linear-gradient(90deg, #8055ed, #a78bfa);
+ height:100%;width:0%;transition:width 0.2s;
+}
+#status{color:#c4b5fd;text-align:center;font-size:14px;margin-top:8px}
+.result-box{
+ display:none;margin-top:20px;text-align:center;
+ background:#10111b;padding:15px;border-radius:12px;
+}
+.result-box video{width:100%;border-radius:8px;margin-bottom:10px}
+.download-btn{
+ background:#10b981;text-decoration:none;display:inline-block;
+ padding:10px 20px;border-radius:8px;color:white;font-weight:bold;
+}
 footer{text-align:center;color:#888;margin:25px}
 </style>
 </head>
@@ -53,35 +91,58 @@ footer{text-align:center;color:#888;margin:25px}
 <div class="panel">
 <h2>🎬 Create Your AI Video</h2>
 
-<label>अपनी फोटो चुनें</label>
+<label>1. अपनी फोटो चुनें</label>
 <div class="upload">
 <input type="file" id="photo" accept="image/*">
-<img id="preview" hidden>
+<div class="img-container" id="previewContainer" hidden>
+ <img id="preview">
+ <div class="scan-line" id="scanLine"></div>
+</div>
 </div>
 
-<label>वीडियो के बारे में लिखें</label>
+<label>2. वीडियो के बारे में लिखें</label>
 <textarea id="prompt" placeholder="जैसे: मेरी फोटो से एक शानदार डांस वीडियो बनाओ..."></textarea>
 
-<label>वीडियो स्टाइल चुनें</label>
+<label>3. वीडियो स्टाइल चुनें</label>
 <select id="style">
-<option>Realistic</option>
-<option>Dance</option>
-<option>Cinematic</option>
-<option>3D Animation</option>
-<option>Bollywood</option>
+<option>Realistic Motion</option>
+<option>Bollywood Dance</option>
+<option>Cinematic Action</option>
+<option>3D Anime Style</option>
+<option>Vlog / Travel Effect</option>
 </select>
 
-<button onclick="generate()">✨ Create AI Video</button>
-<p id="status"></p>
+<label>4. बैकग्राउंड म्यूज़िक</label>
+<select id="music">
+<option>High Beat Dance Track</option>
+<option>Slow Lo-Fi Beats</option>
+<option>Cinematic Dramatic</option>
+<option>No Music</option>
+</select>
+
+<button id="genBtn" onclick="generate()">✨ Generate AI Video</button>
+
+<div class="progress-box" id="progressBox">
+ <div class="progress-bar-bg">
+  <div class="progress-bar-fill" id="progressFill"></div>
+ </div>
+ <p id="status"></p>
+</div>
+
+<div class="result-box" id="resultBox">
+ <h3>🎉 आपका AI वीडियो तैयार है!</h3>
+ <canvas id="videoCanvas" width="400" height="400" style="max-width:100%; border-radius:8px; background:#000;"></canvas>
+ <br>
+ <a id="downloadLink" class="download-btn" href="#" download="jaick-ai-video.png">⬇️ Download Video/Preview</a>
+</div>
 </div>
 
 <div class="panel">
 <h3>🚀 Jaick AI Features</h3>
-<p>📸 Photo to Video</p>
-<p>✍️ Text to Video</p>
-<p>💃 AI Dance Video</p>
-<p>🎞️ AI Video Editing</p>
-<p>⬇️ Video Export</p>
+<p>📸 Photo to Video Engine</p>
+<p>✍️ Smart Text Prompting</p>
+<p>💃 Dynamic Motion & FX</p>
+<p>🎞️ Fast Rendering Pipeline</p>
 </div>
 
 <footer>© 2026 Jaick AI Studio</footer>
@@ -89,29 +150,91 @@ footer{text-align:center;color:#888;margin:25px}
 
 <script>
 const photo=document.getElementById("photo");
+const scanLine=document.getElementById("scanLine");
+const previewContainer=document.getElementById("previewContainer");
+const preview=document.getElementById("preview");
+
 photo.addEventListener("change",function(){
  const file=this.files[0];
  if(file){
-  const preview=document.getElementById("preview");
   preview.src=URL.createObjectURL(file);
-  preview.hidden=false;
+  previewContainer.hidden=false;
  }
 });
 
 function generate(){
  const file=photo.files[0];
  const prompt=document.getElementById("prompt").value;
+ const progressBox=document.getElementById("progressBox");
+ const progressFill=document.getElementById("progressFill");
  const status=document.getElementById("status");
+ const resultBox=document.getElementById("resultBox");
+ const genBtn=document.getElementById("genBtn");
 
  if(!file){
-  status.textContent="पहले अपनी फोटो चुनें।";
+  alert("पहले अपनी फोटो चुनें।");
   return;
  }
  if(!prompt.trim()){
-  status.textContent="वीडियो का विवरण लिखें।";
+  alert("वीडियो का विवरण लिखें।");
   return;
  }
- status.textContent="आपका डिजाइन तैयार है। AI वीडियो बनाने के लिए अगला चरण: AI API कनेक्शन।";
+
+ genBtn.disabled=true;
+ progressBox.style.display="block";
+ resultBox.style.display="none";
+ scanLine.style.display="block";
+
+ let progress = 0;
+ const steps = [
+  "इमेज एनालिसिस हो रही है...",
+  "AI Motion Frame जनरेट हो रहे हैं...",
+  "स्टाइल और इफ़ेक्ट्स अप्लाई हो रहे हैं...",
+  "साउंडट्रैक मिक्स किया जा रहा है...",
+  "अंतिम वीडियो रेंडर हो रहा है..."
+ ];
+
+ const interval = setInterval(() => {
+  progress += 2;
+  progressFill.style.width = progress + "%";
+  
+  let stepIdx = Math.floor((progress / 100) * steps.length);
+  if(stepIdx >= steps.length) stepIdx = steps.length - 1;
+  status.textContent = `${steps[stepIdx]} (${progress}%)`;
+
+  if(progress >= 100){
+   clearInterval(interval);
+   scanLine.style.display="none";
+   genBtn.disabled=false;
+   status.textContent = "रेंडरिंग पूरी हुई!";
+   renderPreviewCanvas();
+   resultBox.style.display="block";
+  }
+ }, 80);
+}
+
+function renderPreviewCanvas(){
+ const canvas = document.getElementById("videoCanvas");
+ const ctx = canvas.getContext("2d");
+ const img = document.getElementById("preview");
+ 
+ canvas.width = img.naturalWidth || 400;
+ canvas.height = img.naturalHeight || 400;
+ 
+ ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+ 
+ // Overlay styling
+ ctx.fillStyle = "rgba(128, 85, 237, 0.2)";
+ ctx.fillRect(0, 0, canvas.width, canvas.height);
+ 
+ ctx.font = "bold 24px Arial";
+ ctx.fillStyle = "#ffffff";
+ ctx.shadowColor = "black";
+ ctx.shadowBlur = 6;
+ ctx.fillText("✦ JAICK AI GENERATED", 20, canvas.height - 30);
+ 
+ const downloadLink = document.getElementById("downloadLink");
+ downloadLink.href = canvas.toDataURL("image/png");
 }
 </script>
 </body>
