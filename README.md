@@ -1,32 +1,65 @@
 # JAICK AI Studio
 
-AI-powered browser-based reel editor for creating short-form social videos.
+AI-powered browser-based reel editor for short-form video creation.
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Type-Web%20App-blue" alt="Type: Web App" />
+  <img src="https://img.shields.io/badge/Stack-HTML%2FCSS%2FJS-orange" alt="Stack: HTML/CSS/JS" />
+  <img src="https://img.shields.io/badge/Status-Prototype-yellow" alt="Status: Prototype" />
+</p>
 
 ## Overview
-JAICK AI Studio is a lightweight web app for editing short videos directly in the browser. It lets users add clips, trim segments, reorder media, add titles and subtitles, adjust audio, apply visual filters, and export a final reel for social platforms.
+JAICK AI Studio is a browser-based editor for creating short social videos from local media files. It is designed for quick clip organization, trimming, visual styling, and export without needing a backend or heavy desktop editing workflow.
+
+This project focuses on a local-first editing experience, allowing users to:
+- add video clips
+- reorder the storyline
+- trim start/end points
+- add titles and captions
+- control audio levels
+- apply filters
+- export the final result
+
+## Why this project
+Creating social reels often requires multiple tools and a complex workflow. JAICK AI Studio brings the core editing flow into a simple browser interface so users can work fast and keep everything local to the machine.
 
 ## Features
-- Add multiple video clips from local files
-- Reorder clips in the timeline
-- Trim clip in/out points
-- Add title overlays and captions
-- Choose social presets for Reel, Shorts, TikTok, square, and landscape videos
-- Adjust video/audio levels and background music
-- Apply visual filters (warm, cool, mono, etc.)
-- Export the final edited video locally in the browser
-- Works as a local-first project editor without a backend
+- Multi-clip timeline editing
+- Drag-and-drop style clip ordering
+- Trim controls for start and end points
+- Title overlay support
+- Automatic caption workflow support
+- Social format presets for reels and vertical videos
+- Audio mixing and background music support
+- Visual filter presets
+- Local export of the finished video
+- Frontend-only architecture for easy experimentation
 
-## Platforms
-- Web app (browser-based)
-- Works on desktop and laptop browsers
-- Mobile-friendly UI for local editing workflows
+## Supported use cases
+- Instagram Reels
+- YouTube Shorts
+- TikTok-style edits
+- Short-form content creation
+- Fast social-ready video assembly
 
-## Project Type
-This repository contains a frontend-only editing prototype built with HTML, CSS, and JavaScript.
+## Tech stack
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
+- Browser Media APIs
+- Canvas-based preview/export workflow
 
-## Run Locally
+## Project structure
+```text
+jaick-ai-studio/
+├── index.html      # Main app interface and logic
+├── README.md       # Project overview and setup guide
+└── .gitignore      # Git repository configuration (if present)
+```
+
+## Run locally
 ### Option 1: Open directly
-1. Download or clone the repository
+1. Clone the repository
 2. Open `index.html` in a modern browser
 
 ### Option 2: Use a local web server
@@ -38,12 +71,27 @@ Then open:
 http://localhost:8000
 ```
 
-## Project Structure
-- `index.html` — main app UI and logic
-- `README.md` — project documentation
+## How it works
+The app is designed as a frontend-only editor. It reads local video files through the browser, lets the user adjust timeline and visual settings, and renders the final composition before exporting the video locally.
 
-## Development Notes
-The app is designed as a local-first editor and uses browser APIs for media handling, timeline editing, and export. It is a good foundation for extending with AI features such as automatic captioning, smart cuts, or richer media generation.
+## Development notes
+This project is currently a prototype and is built as a local-first editing app. It is a strong foundation for adding AI-powered features such as:
+- automatic subtitle generation
+- smart scene detection
+- auto-trimming by spoken content
+- AI-generated titles and effects
+- better transitions and media suggestions
+
+## Current status
+Prototype / early development
 
 ## License
-This project is currently under development. Add an appropriate license before public release.
+This project is currently under development. Add a proper license before public release.
+
+## Roadmap
+- improve timeline UX
+- add better caption timing controls
+- add more cinematic filters and transitions
+- support drag-to-reorder clips more smoothly
+- integrate AI-assisted editing workflows
+- add downloadable project presets and templates
