@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
   <title>JAICK AI Studio - Video Recorder</title>
   <style>
     * {
@@ -11,162 +12,391 @@
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+
     body {
-      background-color: #0f172a;
-      color: #f8fafc;
+      min-height: 100vh;
+      padding: 24px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
+      color: #f8fafc;
+      background: #0f172a;
     }
+
     h1 {
-      margin-bottom: 20px;
+      margin-bottom: 8px;
       color: #38bdf8;
+      text-align: center;
     }
+
+    .subtitle {
+      margin-bottom: 20px;
+      color: #94a3b8;
+      text-align: center;
+    }
+
     .video-container {
-      position: relative;
       width: 100%;
-      max-width: 640px;
-      background: #1e293b;
-      border-radius: 12px;
+      max-width: 720px;
       overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      border-radius: 12px;
+      background: #1e293b;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, .5);
     }
+
     video {
-      width: 100%;
-      height: auto;
       display: block;
-      background-color: #000;
+      width: 100%;
+      max-height: 70vh;
+      background: #000;
     }
+
+    .timer {
+      margin-top: 18px;
+      color: #f8fafc;
+      font-size: 24px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+    }
+
     .controls {
       display: flex;
-      gap: 12px;
-      margin-top: 20px;
       flex-wrap: wrap;
       justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
     }
-    button, a.btn {
-      padding: 12px 24px;
-      border: none;
+
+    button,
+    a.btn {
+      display: inline-block;
+      padding: 11px 18px;
+      border: 0;
       border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
       text-decoration: none;
-      transition: all 0.2s ease;
+      cursor: pointer;
+      transition: background-color .2s ease, opacity .2s ease;
     }
-    #startBtn {
-      background-color: #22c55e;
-      color: white;
-    }
-    #startBtn:hover {
-      background-color: #16a34a;
-    }
-    #stopBtn {
-      background-color: #ef4444;
-      color: white;
-    }
-    #stopBtn:hover {
-      background-color: #dc2626;
-    }
-    #stopBtn:disabled {
-      background-color: #64748b;
+
+    button:disabled {
+      background: #475569 !important;
       cursor: not-allowed;
+      opacity: .7;
     }
-    #downloadBtn {
-      background-color: #3b82f6;
-      color: white;
-      display: none;
-    }
-    #downloadBtn:hover {
-      background-color: #2563eb;
-    }
+
+    #startBtn { background: #22c55e; }
+    #startBtn:not(:disabled):hover { background: #16a34a; }
+    #pauseBtn { background: #f59e0b; }
+    #pauseBtn:not(:disabled):hover { background: #d97706; }
+    #stopBtn { background: #ef4444; }
+    #stopBtn:not(:disabled):hover { background: #dc2626; }
+    #retakeBtn { background: #64748b; }
+    #retakeBtn:not(:disabled):hover { background: #475569; }
+    #downloadBtn { display: none; background: #3b82f6; }
+    #downloadBtn:hover { background: #2563eb; }
+
     .status {
-      margin-top: 15px;
-      font-size: 14px;
+      min-height: 24px;
+      margin-top: 14px;
+      color: #cbd5e1;
+      text-align: center;
+    }
+
+    .hint {
+      max-width: 720px;
+      margin-top: 10px;
       color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 16px; }
+      button, a.btn { padding: 10px 14px; font-size: 14px; }
     }
   </style>
 </head>
 <body>
-
   <h1>JAICK AI Studio</h1>
-  
+  <p class="subtitle">Video Recorder</p>
+
   <div class="video-container">
     <video id="preview" autoplay playsinline muted></video>
   </div>
 
+  <div class="timer" id="timer" aria-live="off">00:00</div>
+
   <div class="controls">
-    <button id="startBtn">🔴 Start Recording</button>
-    <button id="stopBtn" disabled>⏹️ Stop Recording</button>
-    <a id="downloadBtn" class="btn">⬇️ Download Video</a>
+    <button id="startBtn" type="button" disabled>🔴 Start Recording</button>
+    <button id="pauseBtn" type="button" disabled>⏸️ Pause</button>
+    <button id="stopBtn" type="button" disabled>⏹️ Stop</button>
+    <button id="retakeBtn" type="button" hidden>🔄 Record Again</button>
+    <a id="downloadBtn" class="btn" aria-label="Download recorded video">⬇️ Download Video</a>
   </div>
 
-  <div class="status" id="statusText">Camera ready...</div>
+  <p class="status" id="statusText" role="status" aria-live="polite">Camera permission ka intezar hai...</p>
+  <p class="hint">Camera aur microphone chalane ke liye permission dein. Browser mein camera access ke liye HTTPS ya localhost zaroori hai.</p>
 
   <script>
     const preview = document.getElementById('preview');
     const startBtn = document.getElementById('startBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
     const stopBtn = document.getElementById('stopBtn');
+    const retakeBtn = document.getElementById('retakeBtn');
     const downloadBtn = document.getElementById('downloadBtn');
     const statusText = document.getElementById('statusText');
+    const timerText = document.getElementById('timer');
 
-    let mediaRecorder;
+    let stream = null;
+    let mediaRecorder = null;
     let recordedChunks = [];
-    let stream;
+    let recordingUrl = null;
+    let timerInterval = null;
+    let elapsedBeforeCurrentRun = 0;
+    let runStartedAt = 0;
 
-    // Start Camera Feed
+    function formatTime(milliseconds) {
+      const totalSeconds = Math.floor(milliseconds / 1000);
+      const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+      const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+      const hours = Math.floor(totalSeconds / 3600);
+      return hours > 0
+        ? `${hours.toString().padStart(2, '0')}:${minutes.padStart(2, '0')}:${seconds}`
+        : `${minutes}:${seconds}`;
+    }
+
+    function currentElapsedTime() {
+      if (!mediaRecorder || mediaRecorder.state !== 'recording') {
+        return elapsedBeforeCurrentRun;
+      }
+      return elapsedBeforeCurrentRun + (Date.now() - runStartedAt);
+    }
+
+    function updateTimer() {
+      timerText.textContent = formatTime(currentElapsedTime());
+    }
+
+    function stopTimer() {
+      if (timerInterval !== null) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      updateTimer();
+    }
+
+    function releaseRecordingUrl() {
+      if (recordingUrl) {
+        URL.revokeObjectURL(recordingUrl);
+        recordingUrl = null;
+      }
+      downloadBtn.removeAttribute('href');
+      downloadBtn.style.display = 'none';
+    }
+
+    function setCameraReady() {
+      preview.srcObject = stream;
+      preview.controls = false;
+      preview.muted = true;
+      preview.play().catch(() => {});
+      startBtn.disabled = false;
+      statusText.textContent = 'Camera ready hai. Recording shuru kar sakte hain.';
+    }
+
     async function initCamera() {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        statusText.textContent = 'Is browser mein camera access available nahi hai. HTTPS ya localhost par kholen.';
+        startBtn.disabled = true;
+        return;
+      }
+
+      startBtn.disabled = true;
+      statusText.textContent = 'Camera aur microphone permission maangi ja rahi hai...';
+
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-        preview.srcObject = stream;
-        statusText.innerText = "Camera Active - Press Start to Record";
-      } catch (err) {
-        console.error("Camera access error:", err);
-        statusText.innerText = "Error: Camera/Microphone access denied!";
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: { ideal: 1280 }, height: { ideal: 720 } },
+          audio: true
+        });
+        setCameraReady();
+      } catch (error) {
+        console.error('Camera access error:', error);
+        const messages = {
+          NotAllowedError: 'Camera/microphone permission nahi mili. Browser settings mein permission allow karein.',
+          NotFoundError: 'Camera ya microphone device nahi mila.',
+          NotReadableError: 'Camera/microphone kisi aur app mein use ho raha hai.',
+          OverconstrainedError: 'Camera requested settings support nahi karta.'
+        };
+        statusText.textContent = messages[error.name] || 'Camera/microphone shuru nahi ho saka. Permission aur device check karein.';
+        startBtn.disabled = true;
       }
     }
 
-    // Start Recording
-    startBtn.addEventListener('click', () => {
+    function chooseMimeType() {
+      if (!window.MediaRecorder || !MediaRecorder.isTypeSupported) return '';
+      const options = [
+        'video/webm;codecs=vp9,opus',
+        'video/webm;codecs=vp8,opus',
+        'video/webm'
+      ];
+      return options.find((type) => MediaRecorder.isTypeSupported(type)) || '';
+    }
+
+    function startRecording() {
+      if (!stream || !stream.active) {
+        statusText.textContent = 'Camera connection nahi hai. Record Again dabakar camera dobara shuru karein.';
+        startBtn.disabled = true;
+        return;
+      }
+
+      if (!window.MediaRecorder) {
+        statusText.textContent = 'Is browser mein video recording supported nahi hai.';
+        return;
+      }
+
+      releaseRecordingUrl();
       recordedChunks = [];
-      mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+      elapsedBeforeCurrentRun = 0;
+      timerText.textContent = '00:00';
+      preview.controls = false;
+      preview.muted = true;
 
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          recordedChunks.push(e.data);
+      try {
+        const mimeType = chooseMimeType();
+        mediaRecorder = mimeType
+          ? new MediaRecorder(stream, { mimeType })
+          : new MediaRecorder(stream);
+      } catch (error) {
+        console.error('Could not create recorder:', error);
+        statusText.textContent = 'Recording shuru nahi ho saki. Browser ya camera format check karein.';
+        return;
+      }
+
+      mediaRecorder.addEventListener('dataavailable', (event) => {
+        if (event.data && event.data.size > 0) recordedChunks.push(event.data);
+      });
+
+      mediaRecorder.addEventListener('error', (event) => {
+        console.error('Recording error:', event.error || event);
+        statusText.textContent = 'Recording mein error aaya. Dobara koshish karein.';
+      });
+
+      mediaRecorder.addEventListener('stop', () => {
+        stopTimer();
+        const type = mediaRecorder.mimeType || 'video/webm';
+        const blob = new Blob(recordedChunks, { type });
+
+        startBtn.disabled = true;
+        pauseBtn.disabled = true;
+        stopBtn.disabled = true;
+        retakeBtn.hidden = false;
+
+        if (blob.size === 0) {
+          statusText.textContent = 'Video save nahi hui. Dobara recording karke dekhein.';
+          return;
         }
-      };
 
-      mediaRecorder.onstop = () => {
-        const blob = new Blob(recordedChunks, { type: 'video/webm' });
-        const videoURL = URL.createObjectURL(blob);
+        recordingUrl = URL.createObjectURL(blob);
         preview.srcObject = null;
-        preview.src = videoURL;
+        preview.src = recordingUrl;
         preview.controls = true;
         preview.muted = false;
-        preview.play();
+        preview.load();
+        preview.play().catch(() => {});
 
-        downloadBtn.href = videoURL;
-        downloadBtn.download = `jaick-video-${Date.now()}.webm`;
+        const extension = type.includes('mp4') ? 'mp4' : 'webm';
+        downloadBtn.href = recordingUrl;
+        downloadBtn.download = `jaick-video-${Date.now()}.${extension}`;
         downloadBtn.style.display = 'inline-block';
-        statusText.innerText = "Recording finished! Click Download to save.";
-      };
+        statusText.textContent = 'Recording complete! Video preview karein ya download karein.';
+      });
 
-      mediaRecorder.start();
+      try {
+        mediaRecorder.start(1000);
+        runStartedAt = Date.now();
+        timerInterval = window.setInterval(updateTimer, 250);
+        startBtn.disabled = true;
+        pauseBtn.disabled = false;
+        pauseBtn.textContent = '⏸️ Pause';
+        stopBtn.disabled = false;
+        retakeBtn.hidden = true;
+        downloadBtn.style.display = 'none';
+        statusText.textContent = 'Recording chal rahi hai...';
+      } catch (error) {
+        console.error('Could not start recording:', error);
+        statusText.textContent = 'Recording shuru nahi ho saki. Dobara koshish karein.';
+        startBtn.disabled = false;
+        pauseBtn.disabled = true;
+        stopBtn.disabled = true;
+      }
+    }
+
+    function togglePause() {
+      if (!mediaRecorder) return;
+
+      if (mediaRecorder.state === 'recording') {
+        mediaRecorder.pause();
+        elapsedBeforeCurrentRun += Date.now() - runStartedAt;
+        pauseBtn.textContent = '▶️ Resume';
+        statusText.textContent = 'Recording pause hai.';
+      } else if (mediaRecorder.state === 'paused') {
+        mediaRecorder.resume();
+        runStartedAt = Date.now();
+        pauseBtn.textContent = '⏸️ Pause';
+        statusText.textContent = 'Recording phir se chal rahi hai...';
+      }
+      updateTimer();
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && (mediaRecorder.state === 'recording' || mediaRecorder.state === 'paused')) {
+        if (mediaRecorder.state === 'recording') {
+          elapsedBeforeCurrentRun += Date.now() - runStartedAt;
+        }
+        stopTimer();
+        mediaRecorder.stop();
+        pauseBtn.disabled = true;
+        stopBtn.disabled = true;
+        statusText.textContent = 'Video process ho rahi hai...';
+      }
+    }
+
+    async function recordAgain() {
+      stopTimer();
+      releaseRecordingUrl();
+      recordedChunks = [];
+      elapsedBeforeCurrentRun = 0;
+      timerText.textContent = '00:00';
+      preview.removeAttribute('src');
+      preview.controls = false;
+      preview.muted = true;
+
+      if (stream && stream.active) {
+        setCameraReady();
+        retakeBtn.hidden = true;
+        return;
+      }
+
       startBtn.disabled = true;
-      stopBtn.disabled = false;
-      downloadBtn.style.display = 'none';
-      statusText.innerText = "Recording in progress...";
-    });
+      retakeBtn.hidden = true;
+      await initCamera();
+      retakeBtn.hidden = false;
+    }
 
-    // Stop Recording
-    stopBtn.addEventListener('click', () => {
-      mediaRecorder.stop();
-      startBtn.disabled = false;
-      stopBtn.disabled = true;
+    startBtn.addEventListener('click', startRecording);
+    pauseBtn.addEventListener('click', togglePause);
+    stopBtn.addEventListener('click', stopRecording);
+    retakeBtn.addEventListener('click', recordAgain);
+
+    window.addEventListener('beforeunload', () => {
+      stopTimer();
+      if (stream) stream.getTracks().forEach((track) => track.stop());
+      releaseRecordingUrl();
     });
 
     initCamera();
