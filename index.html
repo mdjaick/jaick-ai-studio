@@ -1,94 +1,1226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090d19">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090d19" />
   <title>JAICK AI Studio — Advanced Reel Editor</title>
   <style>
-    :root{color-scheme:dark;--bg:#090d19;--panel:#111827;--line:#253149;--muted:#93a0b7;--text:#f4f7ff;--cyan:#62dcff;--purple:#9b8cff;--radius:16px}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 75% -10%,#19345b 0,transparent 38%),var(--bg);color:var(--text);font:14px Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif}button,input,textarea,select{font:inherit}.shell{max-width:1220px;margin:auto;padding:22px 26px 48px}.topbar{height:56px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff12;margin-bottom:26px}.brand{display:flex;align-items:center;gap:11px;font-weight:800}.brand-icon{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,#36c9f3,#8568ff);font-size:20px}.pill,.tag{border:1px solid #34415b;background:#141d2d;color:#b8c5dc;border-radius:999px;padding:7px 11px;font-size:10px}.hero{margin:0 0 20px}.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--cyan);font-weight:800}.hero h1{font-size:clamp(28px,4vw,40px);letter-spacing:-1.4px;margin:7px 0}.hero p,.muted{color:var(--muted);line-height:1.55}.hero p{margin:0;max-width:760px}.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.8fr);gap:16px}.card{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,#121a2a,#101725);padding:18px;box-shadow:0 18px 60px #0002}.card h2{font-size:17px;margin:0 0 5px}.card h3{font-size:13px;margin:0 0 12px}.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:15px}.card-head p{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.5}.preview-wrap{display:flex;align-items:center;justify-content:center;min-height:320px;max-height:64vh;aspect-ratio:9/16;background:#050914;border:1px solid #29364b;border-radius:13px;overflow:hidden;position:relative;margin:0 auto;width:min(100%,390px)}video{display:block;width:100%;height:100%;object-fit:contain;background:#000}.empty{position:absolute;text-align:center;padding:25px;color:var(--muted);font-size:12px;line-height:1.6}.empty b{display:block;font-size:29px;margin-bottom:8px}.timeline{margin-top:16px;border:1px solid #29364b;border-radius:12px;background:#0b1220;padding:12px}.timeline-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.timeline-head strong{font-size:12px}.timeline-head span{font-size:10px;color:var(--muted)}.clip-list{display:grid;gap:8px}.clip-row{display:grid;grid-template-columns:30px minmax(85px,1fr) 70px 70px 30px 30px 30px;gap:6px;align-items:center;padding:7px;border:1px solid #34415a;border-radius:9px;background:#121b2b}.clip-row.active{border-color:#43c7ef}.clip-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:#dce7f7}.clip-index{font-size:10px;color:#9eb0ca}.clip-row input{width:100%;min-width:0;background:#080e19;border:1px solid #34415a;border-radius:6px;color:#fff;padding:6px;font-size:10px}.icon-btn{border:0;border-radius:6px;background:#26344a;color:#e8f1ff;cursor:pointer;padding:5px;font-size:11px}.icon-btn.remove{background:#482633}.track{display:grid;grid-template-columns:58px 1fr;gap:7px;align-items:center;margin-top:8px}.track-label{font-size:9px;color:#aab8cd}.track-bar{min-height:22px;border:1px solid #33415a;border-radius:6px;background:linear-gradient(90deg,#173b56,#222c44);padding:4px 8px;color:#c5d6ea;font-size:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.track-bar.audio{background:repeating-linear-gradient(135deg,#30244c,#30244c 8px,#392b59 8px,#392b59 16px)}.settings{display:grid;gap:12px;align-content:start}.group{border:1px solid #26334a;border-radius:12px;background:#0d1421;padding:14px}.group h3{display:flex;justify-content:space-between;align-items:center}.field{display:flex;flex-direction:column;gap:6px;color:#d9e3f3;font-size:11px;margin:0 0 11px}.field:last-child{margin-bottom:0}.field input,.field textarea,.field select{width:100%;padding:9px 10px;border:1px solid #34415a;border-radius:8px;background:#0a101c;color:var(--text);font-size:11px}.field textarea{min-height:66px;resize:vertical;line-height:1.45}.field input[type=range]{padding:4px 0;accent-color:var(--cyan)}.field input[type=color]{height:36px;padding:3px}.field small{color:var(--muted);font-size:9px;line-height:1.4}.two{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid #34415a;border-radius:8px;padding:9px 12px;background:#202b3e;color:#eef4ff;font-size:11px;font-weight:750;text-decoration:none;cursor:pointer}.btn:hover:not(:disabled){filter:brightness(1.13)}.btn.primary{border-color:#28a7cc;background:linear-gradient(120deg,#13a8cb,#5969dd)}.btn.green{background:#168d75;border-color:#188d69}.btn.danger{background:#462532;border-color:#774052}.btn.download{display:none;background:#172c49;border-color:#385a84;color:#bde8ff}.btn:disabled{opacity:.45;cursor:not-allowed}.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.status{min-height:19px;margin:9px 0 0;color:#a9b7cb;font-size:10px;line-height:1.5}.notice{border:1px solid #463c26;border-radius:8px;background:#211c13;color:#d8c99e;padding:9px;font-size:9px;line-height:1.5}.progress{height:5px;background:#253149;border-radius:9px;overflow:hidden;margin-top:8px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#13a8cb,#9b8cff);transition:width .15s}.footer{text-align:center;color:#637087;font-size:10px;padding-top:20px}.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}@media(max-width:850px){.layout{grid-template-columns:1fr}.settings{grid-template-columns:repeat(2,minmax(0,1fr))}.settings .full{grid-column:1/-1}.preview-wrap{min-height:300px}}@media(max-width:560px){.shell{padding:12px}.card{padding:13px}.settings{grid-template-columns:1fr}.settings .full{grid-column:auto}.preview-wrap{min-height:280px;width:min(100%,330px)}.clip-row{grid-template-columns:22px minmax(70px,1fr) 55px 55px 26px 26px 26px;gap:4px;padding:5px}.clip-row input{padding:5px 3px}.timeline{padding:9px}.hero h1{font-size:30px}.topbar{margin-bottom:20px}}
+    :root {
+      color-scheme: dark;
+      --bg: #090d19;
+      --panel: #111827;
+      --panel-2: #0d1421;
+      --line: #253149;
+      --muted: #93a0b7;
+      --text: #f4f7ff;
+      --cyan: #62dcff;
+      --purple: #9b8cff;
+      --green: #3ddc97;
+      --danger: #ff5d73;
+      --warning: #d8c99e;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(ellipse at 75% -10%, #19345b 0, transparent 38%), var(--bg);
+      color: var(--text);
+      font: 14px Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    a { color: inherit; }
+
+    .shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 22px 24px 48px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      height: 58px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #36c9f3, #8568ff);
+      box-shadow: 0 8px 24px rgba(89, 141, 255, .28);
+      font-size: 20px;
+    }
+
+    .pill, .tag {
+      border: 1px solid #34415b;
+      background: #141d2d;
+      color: #b8c5dc;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      margin-bottom: 20px;
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      font-weight: 800;
+    }
+
+    .hero h1 {
+      margin: 8px 0 8px;
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -1.5px;
+      line-height: 1.08;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(300px, .8fr);
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, #121a2a, #101725);
+      padding: 18px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.12);
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .card h2 { margin: 0; font-size: 18px; }
+    .card-head p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .preview-wrap {
+      position: relative;
+      width: min(100%, 410px);
+      max-height: 66vh;
+      aspect-ratio: 9 / 16;
+      margin: 0 auto;
+      background: #050914;
+      border: 1px solid #29364b;
+      border-radius: 13px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-wrap video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .empty {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 12px;
+      padding: 20px;
+    }
+
+    .empty b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 30px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid #34415a;
+      border-radius: 9px;
+      background: #202b3e;
+      color: #eef4ff;
+      padding: 9px 12px;
+      font-size: 11px;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: transform .12s ease, filter .12s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+
+    .btn.primary { background: linear-gradient(120deg, #13a8cb, #5969dd); border-color: #28a7cc; }
+    .btn.green { background: #168d75; border-color: #188d69; }
+    .btn.danger { background: #462532; border-color: #774052; }
+    .btn.download { display: none; background: #172c49; border-color: #385a84; color: #bde8ff; }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    .muted { color: var(--muted); }
+
+    .timeline {
+      margin-top: 16px;
+      border: 1px solid #29364b;
+      border-radius: 12px;
+      background: #0b1220;
+      padding: 12px;
+    }
+
+    .timeline-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .timeline-head strong {
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    .timeline-head span {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .clip-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .clip-row {
+      display: grid;
+      grid-template-columns: 28px minmax(90px, 1fr) 60px 60px 28px 28px 28px;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 7px;
+      border: 1px solid #34415a;
+      border-radius: 9px;
+      background: #121b2b;
+    }
+
+    .clip-row.active { border-color: #43c7ef; }
+
+    .clip-index {
+      color: #a7b6cf;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .clip-name {
+      font-size: 10px;
+      color: #dfeaf9;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .clip-row input {
+      width: 100%;
+      background: #080e19;
+      color: var(--text);
+      border: 1px solid #34415a;
+      border-radius: 6px;
+      padding: 6px 5px;
+      font-size: 10px;
+      appearance: none;
+    }
+
+    .icon-btn {
+      width: 26px;
+      height: 26px;
+      border: 0;
+      border-radius: 6px;
+      background: #26344a;
+      color: #ecf3ff;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .icon-btn.remove { background: #482633; }
+
+    .track {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 7px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .track-label {
+      font-size: 9px;
+      color: #aab8cd;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .track-bar {
+      min-height: 22px;
+      border: 1px solid #33415a;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #173b56, #222c44);
+      color: #dbe6f7;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      font-size: 9px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .track-bar.audio {
+      background: repeating-linear-gradient(
+        135deg,
+        #30244c,
+        #30244c 8px,
+        #392b59 8px,
+        #392b59 16px
+      );
+    }
+
+    .progress {
+      height: 6px;
+      background: #253149;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .progress span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      transition: width .15s ease;
+    }
+
+    .status {
+      min-height: 18px;
+      margin: 10px 0 0;
+      color: #a9b7cb;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .settings {
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .group {
+      border: 1px solid #26334a;
+      border-radius: 12px;
+      background: var(--panel-2);
+      padding: 14px;
+    }
+
+    .group h3 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 0 0 12px;
+      font-size: 13px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 0 0 11px;
+      color: #d9e3f3;
+      font-size: 11px;
+    }
+
+    .field:last-child { margin-bottom: 0; }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      background: #0a101c;
+      border: 1px solid #34415a;
+      border-radius: 8px;
+      color: var(--text);
+      padding: 9px 10px;
+      font-size: 11px;
+      outline: none;
+    }
+
+    .field textarea {
+      min-height: 70px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .field input[type="range"] { padding: 4px 0; accent-color: var(--cyan); }
+    .field input[type="color"] { min-height: 36px; padding: 3px; }
+    .field small {
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 10px;
+    }
+
+    .notice {
+      border: 1px solid #463c26;
+      border-radius: 8px;
+      background: #211c13;
+      color: var(--warning);
+      padding: 9px;
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .footer {
+      text-align: center;
+      color: #637087;
+      font-size: 10px;
+      padding-top: 18px;
+    }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .settings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .settings .group.full { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 560px) {
+      .shell { padding: 12px 12px 26px; }
+      .topbar { margin-bottom: 18px; }
+      .preview-wrap { width: min(100%, 330px); }
+      .settings { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+      .toolbar .btn { flex: 1 1 auto; }
+      .clip-row {
+        grid-template-columns: 22px minmax(70px, 1fr) 52px 52px 24px 24px 24px;
+        gap: 4px;
+        padding: 5px;
+      }
+      .timeline-head { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
-<main class="shell">
-  <nav class="topbar"><div class="brand"><span class="brand-icon">✦</span><span>JAICK <span style="color:#78dfff">AI</span> Studio</span></div><span class="pill">ADVANCED REEL EDITOR</span></nav>
-  <header class="hero"><div class="eyebrow">Create · edit · share</div><h1>Your reel, <span style="color:#69d8ff">your story.</span></h1><p>Arrange multiple clips, trim each one, add captions and titles, choose a look, mix separate audio, then export a vertical or social-ready video.</p></header>
-  <div class="layout">
-    <section class="card"><div class="card-head"><div><h2>Preview &amp; timeline</h2><p>All selected media is processed locally in your browser.</p></div><span class="tag">LOCAL PROJECT</span></div>
-      <div class="preview-wrap" id="previewWrap"><video id="sourceVideo" playsinline preload="metadata"></video><div class="empty" id="previewEmpty"><b>🎬</b>Add one or more video clips to start your reel.</div></div>
-      <div class="controls" style="margin-top:12px"><label class="btn" for="videoFiles">＋ Add video clips</label><input class="visually-hidden" id="videoFiles" type="file" accept="video/*" multiple><button class="btn" id="previewPlay" disabled>▶ Preview clip</button><button class="btn" id="previewPause" disabled>Ⅱ Pause</button><span class="muted" id="projectDuration" style="font-size:10px">0 clips · 00:00</span></div>
-      <div class="timeline"><div class="timeline-head"><strong>VIDEO TRACK</strong><span>Use arrows to reorder · set trim points per clip</span></div><div class="clip-list" id="clipList"><span class="muted" style="font-size:10px">Your clips will appear here.</span></div><div class="track"><span class="track-label">VOICE / MUSIC</span><div class="track-bar audio" id="audioTrack">No added audio track</div></div></div>
-      <div class="controls" style="margin-top:12px"><button class="btn primary" id="exportBtn" disabled>✦ Export reel</button><a class="btn download" id="downloadLink">↓ Download video</a></div><div class="progress" id="progressWrap" hidden><span id="progressBar"></span></div><p class="status" id="editorStatus" role="status" aria-live="polite">Add video clips to begin. Export is WebM and may take time for long videos.</p>
-    </section>
-    <aside class="settings">
-      <section class="group"><h3>Project format <span class="tag">EXPORT</span></h3><div class="two"><label class="field">Social preset<select id="preset"><option value="reel">Instagram Reel · 9:16</option><option value="shorts">YouTube Shorts · 9:16</option><option value="tiktok">TikTok · 9:16</option><option value="square">Square feed · 1:1</option><option value="landscape">Landscape · 16:9</option></select></label><label class="field">Frame fit<select id="fitMode"><option value="cover">Fill &amp; crop</option><option value="contain">Fit with bars</option></select></label></div><p class="muted" style="font-size:9px;margin:0">Presets set dimensions only. Platform publishing is not connected.</p></section>
-      <section class="group"><h3>Title &amp; captions</h3><label class="field">Title overlay<input id="titleText" maxlength="100" placeholder="Add a title to your reel"></label><div class="two"><label class="field">Title position<select id="titlePosition"><option value="top">Top</option><option value="center">Center</option><option value="bottom">Bottom</option></select></label><label class="field">Text size<input id="titleSize" type="number" min="20" max="100" value="48"></label></div><label class="field">Text color<input id="titleColor" type="color" value="#ffffff"></label><label class="field">Captions / subtitles<textarea id="captions" maxlength="1500" placeholder="One caption per line. Lines appear in order across the full reel."></textarea><small>Simple timed captions: each line is shown for an equal portion of the final video.</small></label></section>
-      <section class="group"><h3>Visual look</h3><div class="two"><label class="field">Filter<select id="filter"><option value="none">Original</option><option value="warm">Warm</option><option value="cool">Cool</option><option value="mono">Black &amp; white</option><option value="vivid">Vivid</option><option value="fade">Soft fade</option></select></label><label class="field">Overlay style<select id="overlayStyle"><option value="shadow">Shadow text</option><option value="pill">Dark caption panel</option><option value="clean">Clean text</option></select></label></div><label class="field">Title background color<input id="titleBackground" type="color" value="#101827"></label></section>
-      <section class="group"><h3>Audio mixer</h3><label class="field">Original clip audio <span id="sourceVolumeLabel">70%</span><input id="sourceVolume" type="range" min="0" max="1" step="0.05" value="0.7"><small>Set to 0% to mute the original clip sound.</small></label><label class="field">Add voiceover / music<input id="audioFile" type="file" accept="audio/*"></label><label class="field">Added track volume <span id="musicVolumeLabel">100%</span><input id="musicVolume" type="range" min="0" max="1" step="0.05" value="1"></label><div class="notice">Use audio you own or have permission to use. Added audio starts at the beginning and loops if shorter than the video.</div></section>
-    </aside>
-  </div>
-  <footer class="footer">JAICK AI Studio · Browser-based editor · Export and upload manually to your social account</footer>
-</main>
-<script>
-  const $=id=>document.getElementById(id);
-  const video=$('sourceVideo');
-  let clips=[], audioUrl=null, audioContext=null, videoSource=null, videoGain=null, musicSource=null, musicGain=null;
-  let exporting=false, previewUrl=null;
-  const presetSizes={reel:[720,1280],shorts:[720,1280],tiktok:[720,1280],square:[900,900],landscape:[1280,720]};
-  const effects={none:'none',warm:'saturate(1.15) sepia(.18)',cool:'saturate(1.08) hue-rotate(12deg)',mono:'grayscale(1)',vivid:'saturate(1.55) contrast(1.08)',fade:'saturate(.75) contrast(.9) brightness(1.08)'};
-  const setStatus=text=>$('editorStatus').textContent=text;
-  function secondsLabel(n){if(!Number.isFinite(n))return'00:00';const s=Math.floor(n);return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
-  function totalDuration(){return clips.reduce((sum,c)=>sum+Math.max(0,(Number(c.end)||c.duration)-(Number(c.start)||0)),0)}
-  function createUrl(blob){return URL.createObjectURL(blob)}
-  function updateProject(){const total=totalDuration();$('projectDuration').textContent=`${clips.length} clip${clips.length===1?'':'s'} · ${secondsLabel(total)}`;$('exportBtn').disabled=!clips.length||exporting;$('previewPlay').disabled=!clips.length;$('previewPause').disabled=!clips.length;$('previewEmpty').hidden=clips.length>0;renderClipList()}
-  function renderClipList(){const list=$('clipList');list.replaceChildren();if(!clips.length){const empty=document.createElement('span');empty.className='muted';empty.style.fontSize='10px';empty.textContent='Your clips will appear here.';list.append(empty);return}clips.forEach((clip,index)=>{const row=document.createElement('div');row.className='clip-row'+(index===0?' active':'');const number=document.createElement('span');number.className='clip-index';number.textContent=String(index+1).padStart(2,'0');const name=document.createElement('span');name.className='clip-name';name.title=clip.name;name.textContent=clip.name;const start=document.createElement('input');start.type='number';start.min='0';start.max=String(clip.duration);start.step='.1';start.value=clip.start;start.setAttribute('aria-label',`Clip ${index+1} trim start`);const end=document.createElement('input');end.type='number';end.min='0';end.max=String(clip.duration);end.step='.1';end.value=clip.end;end.setAttribute('aria-label',`Clip ${index+1} trim end`);start.title='Trim start (seconds)';end.title='Trim end (seconds)';start.addEventListener('change',()=>{clip.start=Math.max(0,Math.min(Number(start.value)||0,clip.duration));if(clip.start>=clip.end)clip.end=Math.min(clip.duration,clip.start+.1);updateProject()});end.addEventListener('change',()=>{clip.end=Math.max(clip.start+.1,Math.min(Number(end.value)||clip.duration,clip.duration));updateProject()});const up=makeIcon('↑',()=>moveClip(index,-1),'Move clip up'),down=makeIcon('↓',()=>moveClip(index,1),'Move clip down'),remove=makeIcon('×',()=>removeClip(index),'Remove clip');remove.classList.add('remove');row.append(number,name,start,end,up,down,remove);list.append(row)})}
-  function makeIcon(text,handler,label){const b=document.createElement('button');b.type='button';b.className='icon-btn';b.textContent=text;b.title=label;b.setAttribute('aria-label',label);b.addEventListener('click',handler);return b}
-  function moveClip(i,delta){const j=i+delta;if(j<0||j>=clips.length)return;[clips[i],clips[j]]=[clips[j],clips[i]];updateProject()}
-  function removeClip(i){if(video.src===clips[i]?.url){video.pause();video.removeAttribute('src');video.load()}URL.revokeObjectURL(clips[i].url);clips.splice(i,1);updateProject();setStatus('Clip removed from the local project.')}
-  function waitForMedia(el,event,timeout=10000){return new Promise((resolve,reject)=>{const timer=setTimeout(()=>{el.removeEventListener(event,onEvent);reject(new Error('Media loading timed out.'))},timeout);function onEvent(){clearTimeout(timer);resolve()}el.addEventListener(event,onEvent,{once:true})})}
-  $('videoFiles').addEventListener('change',async event=>{const files=[...event.target.files];if(!files.length)return;setStatus(`Loading ${files.length} video clip${files.length===1?'':'s'}…`);for(const file of files){const url=createUrl(file),probe=document.createElement('video');probe.preload='metadata';probe.src=url;try{await waitForMedia(probe,'loadedmetadata');if(Number.isFinite(probe.duration)&&probe.duration>0)clips.push({name:file.name,url,duration:probe.duration,start:0,end:probe.duration});else URL.revokeObjectURL(url)}catch{URL.revokeObjectURL(url)}}event.target.value='';if(clips.length&&!video.src){video.src=clips[0].url;video.currentTime=clips[0].start}updateProject();setStatus(clips.length?'Clips ready. Arrange and trim them in the timeline.':'Could not read the selected videos. Choose supported video files.')});
-  $('previewPlay').addEventListener('click',async()=>{if(!clips.length)return;const clip=clips[0];video.src=clip.url;try{if(video.readyState<1)await waitForMedia(video,'loadedmetadata');video.currentTime=clip.start;await video.play();setStatus('Previewing the first clip. Export to preview the full edited reel.') }catch{setStatus('Could not play this clip in the browser.')}});
-  $('previewPause').addEventListener('click',()=>video.pause());
-  $('preset').addEventListener('change',()=>{const [w,h]=presetSizes[$('preset').value];$('previewWrap').style.aspectRatio=`${w}/${h}`});
-  $('audioFile').addEventListener('change',()=>{const file=$('audioFile').files[0];if(audioUrl)URL.revokeObjectURL(audioUrl);audioUrl=file?createUrl(file):null;$('audioTrack').textContent=file?`${file.name} · ${Math.round(Number($('musicVolume').value)*100)}% · starts at beginning`:'No added audio track';if(file)setStatus('Audio track added. It will be mixed separately during export.')});
-  $('sourceVolume').addEventListener('input',()=>{const value=Number($('sourceVolume').value);$('sourceVolumeLabel').textContent=Math.round(value*100)+'%';if(videoGain)videoGain.gain.value=value});
-  $('musicVolume').addEventListener('input',()=>{const value=Number($('musicVolume').value);$('musicVolumeLabel').textContent=Math.round(value*100)+'%';$('audioTrack').textContent=$('audioFile').files[0]?`${$('audioFile').files[0].name} · ${Math.round(value*100)}% · starts at beginning`:'No added audio track';if(musicGain)musicGain.gain.value=value});
-  function roundedRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
-  function drawText(ctx,text,x,y,size,color,style,bg,maxWidth){if(!text)return;ctx.save();ctx.font=`800 ${size}px system-ui, sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=color;ctx.shadowColor=style==='shadow'?'#000c':'transparent';ctx.shadowBlur=style==='shadow'?10:0;const lines=[];let line='';for(const word of text.split(/\s+/)){const trial=line?line+' '+word:word;if(ctx.measureText(trial).width>maxWidth&&line){lines.push(line);line=word}else line=trial}if(line)lines.push(line);const lineHeight=size*1.2,total=lines.length*lineHeight;lines.forEach((lineText,i)=>{const yy=y-total/2+i*lineHeight;if(style==='pill'){const width=Math.min(maxWidth,ctx.measureText(lineText).width+36);ctx.fillStyle=bg;ctx.globalAlpha=.78;roundedRect(ctx,(ctx.canvas.width-width)/2,yy-lineHeight*.42,width,lineHeight*.84,9);ctx.globalAlpha=1;ctx.fillStyle=color}ctx.fillText(lineText,x,yy,maxWidth)});ctx.restore()}
-  function renderFrame(ctx,source,w,h,elapsed,duration){ctx.save();ctx.fillStyle='#050914';ctx.fillRect(0,0,w,h);ctx.filter=effects[$('filter').value]||'none';const mode=$('fitMode').value,scale=mode==='cover'?Math.max(w/source.videoWidth,h/source.videoHeight):Math.min(w/source.videoWidth,h/source.videoHeight),dw=source.videoWidth*scale,dh=source.videoHeight*scale;ctx.drawImage(source,(w-dw)/2,(h-dh)/2,dw,dh);ctx.filter='none';const title=$('titleText').value.trim(),size=Math.max(20,Math.min(100,Number($('titleSize').value)||48)),position=$('titlePosition').value,top=position==='top'?h*.13:position==='center'?h*.5:h*.84;drawText(ctx,title,w/2,top,size,$('titleColor').value,$('overlayStyle').value,$('titleBackground').value,w*.84);const lines=$('captions').value.split('\n').map(s=>s.trim()).filter(Boolean);if(lines.length&&duration>0){const idx=Math.min(lines.length-1,Math.floor(elapsed/duration*lines.length));drawText(ctx,lines[idx],w/2,h*.91,Math.max(18,Math.min(42,size*.62)),'#ffffff','pill','#07111f',w*.88)}ctx.restore()}
-  function initAudioGraph(){audioContext||=new (window.AudioContext||window.webkitAudioContext)();if(!videoSource){videoSource=audioContext.createMediaElementSource(video);videoGain=audioContext.createGain();videoSource.connect(videoGain);videoGain.connect(audioContext.destination)}videoGain.gain.value=Number($('sourceVolume').value);if(audioUrl){if(!musicSource){musicSource=audioContext.createMediaElementSource($('musicElement'));musicGain=audioContext.createGain();musicSource.connect(musicGain);musicGain.connect(audioContext.destination)}musicGain.gain.value=Number($('musicVolume').value)}return audioContext}
-  $('exportBtn').addEventListener('click',async()=>{
-    if(exporting||!clips.length)return;
-    if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){setStatus('This browser does not support canvas video export. Try a current desktop Chrome or Edge.');return}
-    const mime=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));if(!mime){setStatus('WebM export is unavailable in this browser.');return}
-    if(clips.some(c=>!Number.isFinite(c.end-c.start)||c.end<=c.start)){setStatus('Each clip needs a valid trim range.');return}
-    const duration=totalDuration(),[w,h]=presetSizes[$('preset').value],canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');let recorder,combined,animation=0;const chunks=[];
-    try{const ac=initAudioGraph();await ac.resume();if(audioUrl){const audio=$('musicElement');audio.src=audioUrl;audio.loop=true;audio.currentTime=0}}
-    catch(error){setStatus(`Audio setup failed: ${error.message}`);return}
-    const videoStream=canvas.captureStream(30),audioOut=audioContext.createMediaStreamDestination();videoGain.connect(audioOut);if(musicGain)musicGain.connect(audioOut);combined=new MediaStream([...videoStream.getVideoTracks(),...audioOut.stream.getAudioTracks()]);
-    try{recorder=new MediaRecorder(combined,{mimeType:mime})}catch(error){combined.getTracks().forEach(t=>t.stop());setStatus(`Could not start export: ${error.message}`);return}
-    exporting=true;updateProject();$('progressWrap').hidden=false;$('progressBar').style.width='0%';$('downloadLink').style.display='none';
-    recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
-    const finished=new Promise(resolve=>{recorder.onstop=()=>{cancelAnimationFrame(animation);combined.getTracks().forEach(t=>t.stop());$('musicElement').pause();video.pause();exporting=false;updateProject();$('progressWrap').hidden=true;const blob=new Blob(chunks,{type:mime});if(blob.size){if(previewUrl)URL.revokeObjectURL(previewUrl);previewUrl=createUrl(blob);$('downloadLink').href=previewUrl;$('downloadLink').download=`jaick-reel-${Date.now()}.webm`;$('downloadLink').style.display='inline-flex';setStatus('Export complete! Download the video, then upload it manually to your social platform.')}else setStatus('No video data was created. Please try a shorter clip.');resolve()}});
-    const stopRecorder=()=>{if(recorder&&recorder.state!=='inactive')recorder.stop()};
-    try{
-      recorder.start(500);setStatus('Exporting clips, captions and audio…');if(audioUrl){$('musicElement').currentTime=0;$('musicElement').play().catch(()=>{})}
-      let elapsed=0;
-      for(let index=0;index<clips.length;index++){
-        const clip=clips[index];video.pause();video.src=clip.url;video.load();if(video.readyState<1)await waitForMedia(video,'loadedmetadata');
-        if(Math.abs(video.currentTime-clip.start)>.04){video.currentTime=clip.start;await waitForMedia(video,'seeked')}
-        await video.play();
-        await new Promise((resolve,reject)=>{let last=0;const timeout=setTimeout(()=>{cancelAnimationFrame(animation);reject(new Error('Export timed out while rendering a clip.'))},Math.max(20000,(clip.end-clip.start)*5000));const draw=()=>{if(!exporting){clearTimeout(timeout);resolve();return}if(video.readyState>=2){const current=Math.min(video.currentTime,clip.end),clipElapsed=Math.max(0,current-clip.start);renderFrame(ctx,video,w,h,elapsed+clipElapsed,duration);const progress=Math.min(99,((elapsed+clipElapsed)/duration)*100);$('progressBar').style.width=progress+'%';last=current}if(video.currentTime>=clip.end||video.ended){clearTimeout(timeout);video.pause();resolve();return}animation=requestAnimationFrame(draw)};animation=requestAnimationFrame(draw)});
-        elapsed+=clip.end-clip.start;
+  <main class="shell">
+    <nav class="topbar" aria-label="Main navigation">
+      <div class="brand">
+        <span class="brand-icon">✦</span>
+        <span>JAICK <span style="color:#78dfff">AI</span> Studio</span>
+      </div>
+      <span class="pill">Advanced Reel Editor</span>
+    </nav>
+
+    <header class="hero">
+      <div class="eyebrow">Create • Edit • Share</div>
+      <h1>Your reel, <span style="color:#69d8ff">your story.</span></h1>
+      <p>Arrange multiple clips, trim them, add titles and captions, mix original audio with a separate voice/music track, and export a social-ready video.</p>
+    </header>
+
+    <div class="layout">
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <h2>Reel Preview & Timeline</h2>
+            <p>Everything is processed locally in the browser, so your files stay on your device.</p>
+          </div>
+          <span class="tag">Local project</span>
+        </div>
+
+        <div class="preview-wrap" id="previewWrap">
+          <video id="sourceVideo" playsinline preload="metadata"></video>
+          <div class="empty" id="previewEmpty"><div><b>🎬</b>Add one or more clips to start building your reel.</div></div>
+        </div>
+
+        <div class="toolbar">
+          <label class="btn" for="videoFiles">＋ Add video clips</label>
+          <input class="visually-hidden" id="videoFiles" type="file" accept="video/*" multiple />
+          <button class="btn" id="previewPlay" type="button" disabled>▶ Preview</button>
+          <button class="btn" id="previewPause" type="button" disabled>Ⅱ Pause</button>
+          <span class="muted" id="projectDuration" style="font-size:10px;">0 clips · 00:00</span>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-head">
+            <strong>Video track</strong>
+            <span>Trim and reorder clips</span>
+          </div>
+          <div class="clip-list" id="clipList">
+            <span class="muted" style="font-size:10px;">Your clips will appear here.</span>
+          </div>
+
+          <div class="track">
+            <span class="track-label">Audio</span>
+            <div class="track-bar audio" id="audioTrack">No added audio track</div>
+          </div>
+        </div>
+
+        <div class="toolbar" style="margin-top: 12px;">
+          <button class="btn primary" id="exportBtn" type="button" disabled>✦ Export reel</button>
+          <a class="btn download" id="downloadLink" href="#">↓ Download video</a>
+        </div>
+
+        <div class="progress" id="progressWrap">
+          <span id="progressBar"></span>
+        </div>
+
+        <p class="status" id="editorStatus" role="status" aria-live="polite">Add video clips to begin. Export is generated as a WebM file.</p>
+      </section>
+
+      <aside class="settings">
+        <section class="group full">
+          <h3>Project format <span class="tag">Export</span></h3>
+          <div class="two-col">
+            <label class="field">Social preset
+              <select id="preset">
+                <option value="reel">Instagram Reel · 9:16</option>
+                <option value="shorts">YouTube Shorts · 9:16</option>
+                <option value="tiktok">TikTok · 9:16</option>
+                <option value="square">Square feed · 1:1</option>
+                <option value="landscape">Landscape · 16:9</option>
+              </select>
+            </label>
+            <label class="field">Frame fit
+              <select id="fitMode">
+                <option value="cover">Fill & crop</option>
+                <option value="contain">Fit with bars</option>
+              </select>
+            </label>
+          </div>
+          <p class="muted" style="margin: 0; font-size:9px;">This controls the final export size. Platform publishing itself is not connected to social APIs.</p>
+        </section>
+
+        <section class="group">
+          <h3>Title & captions</h3>
+          <label class="field">Title overlay
+            <input id="titleText" type="text" maxlength="100" placeholder="Add a title to your reel" />
+          </label>
+          <div class="two-col">
+            <label class="field">Title position
+              <select id="titlePosition">
+                <option value="top">Top</option>
+                <option value="center">Center</option>
+                <option value="bottom">Bottom</option>
+              </select>
+            </label>
+            <label class="field">Text size
+              <input id="titleSize" type="number" min="20" max="100" value="48" />
+            </label>
+          </div>
+          <label class="field">Title color
+            <input id="titleColor" type="color" value="#ffffff" />
+          </label>
+          <label class="field">Captions / subtitles
+            <textarea id="captions" maxlength="1800" placeholder="One caption per line. Lines appear in order across the final reel."></textarea>
+            <small>Each line is shown for an equal portion of the final video.</small>
+          </label>
+        </section>
+
+        <section class="group">
+          <h3>Visual look</h3>
+          <div class="two-col">
+            <label class="field">Filter
+              <select id="filter">
+                <option value="none">Original</option>
+                <option value="warm">Warm</option>
+                <option value="cool">Cool</option>
+                <option value="mono">Black & white</option>
+                <option value="vivid">Vivid</option>
+                <option value="fade">Soft fade</option>
+              </select>
+            </label>
+            <label class="field">Overlay style
+              <select id="overlayStyle">
+                <option value="shadow">Shadow text</option>
+                <option value="pill">Dark caption panel</option>
+                <option value="clean">Clean text</option>
+              </select>
+            </label>
+          </div>
+          <label class="field">Title background color
+            <input id="titleBackground" type="color" value="#101827" />
+          </label>
+        </section>
+
+        <section class="group">
+          <h3>Audio mixer</h3>
+          <label class="field">Original clip audio <span id="sourceVolumeLabel">70%</span>
+            <input id="sourceVolume" type="range" min="0" max="1" step="0.05" value="0.7" />
+            <small>Set to 0% to mute the original sound.</small>
+          </label>
+          <label class="field">Add voiceover / music
+            <input id="audioFile" type="file" accept="audio/*" />
+          </label>
+          <label class="field">Added track volume <span id="musicVolumeLabel">100%</span>
+            <input id="musicVolume" type="range" min="0" max="1" step="0.05" value="1" />
+          </label>
+          <div class="notice">Use audio you own or have permission to use. Added audio will begin at the start of the export and loop if shorter than the reel.</div>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="footer">JAICK AI Studio · Browser-based creator tools · export and upload manually to your social account</footer>
+  </main>
+
+  <audio id="musicElement" preload="auto" hidden></audio>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const video = $('sourceVideo');
+
+    const presetSizes = {
+      reel: [720, 1280],
+      shorts: [720, 1280],
+      tiktok: [720, 1280],
+      square: [900, 900],
+      landscape: [1280, 720]
+    };
+
+    const styleEffects = {
+      none: 'none',
+      warm: 'saturate(1.15) sepia(.18)',
+      cool: 'saturate(1.08) hue-rotate(12deg)',
+      mono: 'grayscale(1)',
+      vivid: 'saturate(1.55) contrast(1.08)',
+      fade: 'saturate(.75) contrast(.9) brightness(1.08)'
+    };
+
+    let clips = [];
+    let audioUrl = null;
+    let audioContext = null;
+    let videoSource = null;
+    let videoGain = null;
+    let musicSource = null;
+    let musicGain = null;
+    let exportPreviewUrl = null;
+    let exporting = false;
+
+    function setStatus(text) {
+      $('editorStatus').textContent = text;
+    }
+
+    function formatTime(value) {
+      if (!Number.isFinite(value)) return '00:00';
+      const totalSeconds = Math.max(0, Math.floor(value));
+      const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+      const secs = String(totalSeconds % 60).padStart(2, '0');
+      return `${mins}:${secs}`;
+    }
+
+    function totalDuration() {
+      return clips.reduce((sum, clip) => sum + Math.max(0, (Number(clip.end) || clip.duration) - (Number(clip.start) || 0)), 0);
+    }
+
+    function updateProjectInfo() {
+      const total = totalDuration();
+      $('projectDuration').textContent = `${clips.length} clip${clips.length === 1 ? '' : 's'} · ${formatTime(total)}`;
+      $('exportBtn').disabled = !clips.length || exporting;
+      $('previewPlay').disabled = !clips.length || exporting;
+      $('previewPause').disabled = !clips.length || exporting;
+      renderClipList();
+    }
+
+    function makeIcon(label, callback, tooltip) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'icon-btn';
+      button.textContent = label;
+      button.title = tooltip;
+      button.addEventListener('click', callback);
+      return button;
+    }
+
+    function renderClipList() {
+      const list = $('clipList');
+      list.replaceChildren();
+
+      if (!clips.length) {
+        const empty = document.createElement('span');
+        empty.className = 'muted';
+        empty.style.fontSize = '10px';
+        empty.textContent = 'Your clips will appear here.';
+        list.append(empty);
+        return;
       }
-      if(recorder.state!=='inactive')stopRecorder();
-    }catch(error){setStatus(error.message||'Export stopped due to a media error.');stopRecorder()}
-    await finished;
-  });
-  $('musicElement').addEventListener('error',()=>{if(audioUrl)setStatus('The selected audio could not be decoded by this browser.')});
-  video.addEventListener('ended',()=>{if(!exporting)$('previewPlay').disabled=!clips.length});
-  window.addEventListener('beforeunload',()=>{clips.forEach(c=>URL.revokeObjectURL(c.url));if(audioUrl)URL.revokeObjectURL(audioUrl);if(previewUrl)URL.revokeObjectURL(previewUrl);audioContext?.close()});
-</script>
-<audio id="musicElement" preload="auto" hidden></audio>
+
+      clips.forEach((clip, index) => {
+        const row = document.createElement('div');
+        row.className = 'clip-row active';
+
+        const number = document.createElement('span');
+        number.className = 'clip-index';
+        number.textContent = String(index + 1).padStart(2, '0');
+
+        const name = document.createElement('span');
+        name.className = 'clip-name';
+        name.title = clip.name;
+        name.textContent = clip.name;
+
+        const startInput = document.createElement('input');
+        startInput.type = 'number';
+        startInput.min = '0';
+        startInput.max = String(clip.duration);
+        startInput.step = '0.1';
+        startInput.value = String(clip.start);
+        startInput.addEventListener('change', () => {
+          const next = Math.max(0, Math.min(Number(startInput.value) || 0, clip.duration));
+          clip.start = next;
+          if (clip.start >= clip.end) clip.end = Math.min(clip.duration, clip.start + 0.1);
+          updateProjectInfo();
+        });
+
+        const endInput = document.createElement('input');
+        endInput.type = 'number';
+        endInput.min = '0';
+        endInput.max = String(clip.duration);
+        endInput.step = '0.1';
+        endInput.value = String(clip.end);
+        endInput.addEventListener('change', () => {
+          const next = Math.max(0, Math.min(Number(endInput.value) || clip.duration, clip.duration));
+          clip.end = Math.max(next, clip.start + 0.1);
+          updateProjectInfo();
+        });
+
+        const up = makeIcon('↑', () => moveClip(index, -1), 'Move clip up');
+        const down = makeIcon('↓', () => moveClip(index, 1), 'Move clip down');
+        const remove = makeIcon('×', () => removeClip(index), 'Remove clip');
+        remove.classList.add('remove');
+
+        row.append(number, name, startInput, endInput, up, down, remove);
+        list.append(row);
+      });
+    }
+
+    function moveClip(index, direction) {
+      const target = index + direction;
+      if (target < 0 || target >= clips.length) return;
+      [clips[index], clips[target]] = [clips[target], clips[index]];
+      updateProjectInfo();
+    }
+
+    function removeClip(index) {
+      const clip = clips[index];
+      if (clip) {
+        if (video.src && video.src.includes(clip.url)) {
+          video.pause();
+          video.removeAttribute('src');
+          video.load();
+        }
+        URL.revokeObjectURL(clip.url);
+      }
+      clips.splice(index, 1);
+      updateProjectInfo();
+      setStatus('Clip removed from the local project.');
+    }
+
+    function waitForEvent(target, eventName, timeout = 10000) {
+      return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => {
+          target.removeEventListener(eventName, onEvent);
+          reject(new Error('Media loading timed out.'));
+        }, timeout);
+
+        function onEvent() {
+          clearTimeout(timer);
+          resolve();
+        }
+
+        target.addEventListener(eventName, onEvent, { once: true });
+      });
+    }
+
+    $('videoFiles').addEventListener('change', async (event) => {
+      const files = [...event.target.files || []];
+      if (!files.length) return;
+
+      setStatus(`Loading ${files.length} video clip${files.length === 1 ? '' : 's'}...`);
+
+      for (const file of files) {
+        const url = URL.createObjectURL(file);
+        const probe = document.createElement('video');
+        probe.preload = 'metadata';
+        probe.src = url;
+
+        try {
+          await waitForEvent(probe, 'loadedmetadata');
+          if (Number.isFinite(probe.duration) && probe.duration > 0) {
+            clips.push({
+              name: file.name,
+              url,
+              duration: probe.duration,
+              start: 0,
+              end: probe.duration
+            });
+          } else {
+            URL.revokeObjectURL(url);
+          }
+        } catch {
+          URL.revokeObjectURL(url);
+        }
+      }
+
+      event.target.value = '';
+      if (clips.length && !video.src) {
+        const first = clips[0];
+        video.src = first.url;
+        video.currentTime = 0;
+      }
+      updateProjectInfo();
+      setStatus(clips.length ? 'Clips ready. Arrange and trim them in the timeline.' : 'Could not read the selected videos. Try supported video files.');
+    });
+
+    $('previewPlay').addEventListener('click', async () => {
+      if (!clips.length) return;
+      const clip = clips[0];
+      video.src = clip.url;
+      try {
+        await waitForEvent(video, 'loadedmetadata');
+        video.currentTime = clip.start;
+        await video.play();
+        setStatus('Previewing the first clip.');
+      } catch {
+        setStatus('Could not play this clip in the browser.');
+      }
+    });
+
+    $('previewPause').addEventListener('click', () => {
+      video.pause();
+    });
+
+    function updateAudioStatus() {
+      const sourceValue = Number($('sourceVolume').value) * 100;
+      const musicValue = Number($('musicVolume').value) * 100;
+      $('sourceVolumeLabel').textContent = `${Math.round(sourceValue)}%`;
+      $('musicVolumeLabel').textContent = `${Math.round(musicValue)}%`;
+
+      const file = $('audioFile').files[0];
+      const label = file ? `${file.name} · ${Math.round(musicValue)}% · starts at beginning` : 'No added audio track';
+      $('audioTrack').textContent = label;
+    }
+
+    $('sourceVolume').addEventListener('input', () => {
+      if (videoGain) videoGain.gain.value = Number($('sourceVolume').value);
+      updateAudioStatus();
+    });
+
+    $('musicVolume').addEventListener('input', () => {
+      if (musicGain) musicGain.gain.value = Number($('musicVolume').value);
+      updateAudioStatus();
+    });
+
+    $('audioFile').addEventListener('change', () => {
+      const file = $('audioFile').files[0];
+      if (audioUrl) URL.revokeObjectURL(audioUrl);
+      audioUrl = file ? URL.createObjectURL(file) : null;
+      if (file) {
+        $('audioTrack').textContent = `${file.name} · ${Math.round(Number($('musicVolume').value) * 100)}% · starts at beginning`;
+        setStatus('Audio track added. It will be mixed into the export.');
+      } else {
+        $('audioTrack').textContent = 'No added audio track';
+      }
+    });
+
+    function roundedRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function drawTextToCanvas(ctx, text, x, y, size, color, style, bg, maxWidth) {
+      if (!text) return;
+
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `800 ${size}px system-ui, sans-serif`;
+
+      const words = text.split(/\s+/).filter(Boolean);
+      const lines = [];
+      let current = '';
+
+      for (const word of words) {
+        const trial = current ? `${current} ${word}` : word;
+        if (ctx.measureText(trial).width > maxWidth && current) {
+          lines.push(current);
+          current = word;
+        } else {
+          current = trial;
+        }
+      }
+      if (current) lines.push(current);
+
+      const lineHeight = size * 1.2;
+      const totalHeight = lines.length * lineHeight;
+      const startY = y - totalHeight / 2;
+
+      lines.forEach((line, index) => {
+        const lineY = startY + index * lineHeight;
+
+        if (style === 'pill') {
+          const paddingX = 18;
+          const boxW = Math.min(maxWidth, ctx.measureText(line).width + paddingX * 2);
+          const boxX = x - boxW / 2;
+          const boxY = lineY - lineHeight * 0.4;
+          ctx.fillStyle = bg;
+          ctx.globalAlpha = 0.78;
+          roundedRect(ctx, boxX, boxY, boxW, lineHeight * 0.82, 8);
+          ctx.globalAlpha = 1;
+        }
+
+        ctx.fillStyle = color;
+        ctx.shadowColor = style === 'shadow' ? '#000c' : 'transparent';
+        ctx.shadowBlur = style === 'shadow' ? 12 : 0;
+        ctx.fillText(line, x, lineY, maxWidth);
+      });
+
+      ctx.restore();
+    }
+
+    function renderFrame(ctx, source, width, height, elapsed, totalDurationSeconds) {
+      ctx.save();
+      ctx.fillStyle = '#050914';
+      ctx.fillRect(0, 0, width, height);
+      ctx.filter = styleEffects[$('filter').value] || 'none';
+
+      const { videoWidth, videoHeight } = source;
+      const mode = $('fitMode').value;
+      const scale = mode === 'cover'
+        ? Math.max(width / videoWidth, height / videoHeight)
+        : Math.min(width / videoWidth, height / videoHeight);
+      const drawW = videoWidth * scale;
+      const drawH = videoHeight * scale;
+      ctx.drawImage(source, (width - drawW) / 2, (height - drawH) / 2, drawW, drawH);
+      ctx.filter = 'none';
+
+      const title = $('titleText').value.trim();
+      const titleSize = Math.max(22, Math.min(100, Number($('titleSize').value) || 48));
+      const titleY = $('titlePosition').value === 'top'
+        ? height * 0.14
+        : $('titlePosition').value === 'center'
+        ? height * 0.5
+        : height * 0.84;
+      drawTextToCanvas(ctx, title, width / 2, titleY, titleSize, $('titleColor').value, $('overlayStyle').value, $('titleBackground').value, width * 0.84);
+
+      const captionLines = $('captions').value.split('\n').map(v => v.trim()).filter(Boolean);
+      if (captionLines.length && totalDurationSeconds > 0) {
+        const idx = Math.min(captionLines.length - 1, Math.floor((elapsed / totalDurationSeconds) * captionLines.length));
+        drawTextToCanvas(ctx, captionLines[idx], width / 2, height * 0.9, Math.max(18, Math.min(40, titleSize * 0.62)), '#ffffff', 'pill', '#07111f', width * 0.88);
+      }
+
+      ctx.restore();
+    }
+
+    function ensureAudioGraph() {
+      if (!audioContext) {
+        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtor) throw new Error('Web Audio API is not supported in this browser.');
+        audioContext = new AudioCtor();
+      }
+
+      if (!videoSource) {
+        videoSource = audioContext.createMediaElementSource(video);
+        videoGain = audioContext.createGain();
+        videoSource.connect(videoGain);
+        videoGain.connect(audioContext.destination);
+      }
+
+      videoGain.gain.value = Number($('sourceVolume').value);
+
+      if (audioUrl && !musicSource) {
+        musicSource = audioContext.createMediaElementSource($('musicElement'));
+        musicGain = audioContext.createGain();
+        musicSource.connect(musicGain);
+        musicGain.connect(audioContext.destination);
+      }
+
+      if (musicGain) {
+        musicGain.gain.value = Number($('musicVolume').value);
+      }
+    }
+
+    function parsePreset() {
+      const preset = $('preset').value;
+      return presetSizes[preset] || presetSizes.reel;
+    }
+
+    async function exportProject() {
+      if (exporting || !clips.length) return;
+
+      const mimeType = ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'].find(type => MediaRecorder.isTypeSupported(type));
+      if (!window.MediaRecorder || !HTMLCanvasElement.prototype.captureStream || !mimeType) {
+        setStatus('Canvas/WebM export is not supported in this browser. Try a recent Chrome or Edge browser.');
+        return;
+      }
+
+      const total = totalDuration();
+      if (!Number.isFinite(total) || total <= 0) {
+        setStatus('Add valid clips before exporting.');
+        return;
+      }
+
+      const [width, height] = parsePreset();
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      const chunks = [];
+      const mediaStream = canvas.captureStream(30);
+
+      try {
+        ensureAudioGraph();
+        await audioContext.resume();
+        if (audioUrl) {
+          const music = $('musicElement');
+          music.src = audioUrl;
+          music.currentTime = 0;
+        }
+      } catch (error) {
+        setStatus(`Audio setup failed: ${error.message}`);
+        return;
+      }
+
+      const audioOut = audioContext.createMediaStreamDestination();
+      videoGain.connect(audioOut);
+      if (musicGain) musicGain.connect(audioOut);
+
+      const mixedStream = new MediaStream([
+        ...mediaStream.getVideoTracks(),
+        ...audioOut.stream.getAudioTracks()
+      ]);
+
+      let recorder;
+      try {
+        recorder = new MediaRecorder(mixedStream, { mimeType });
+      } catch (error) {
+        mixedStream.getTracks().forEach((track) => track.stop());
+        setStatus(`Could not start export: ${error.message}`);
+        return;
+      }
+
+      exporting = true;
+      $('exportBtn').disabled = true;
+      $('downloadLink').style.display = 'none';
+      $('progressWrap').style.display = 'block';
+      $('progressBar').style.width = '0%';
+
+      recorder.ondataavailable = (event) => {
+        if (event.data && event.data.size) chunks.push(event.data);
+      };
+
+      recorder.onstop = () => {
+        mixedStream.getTracks().forEach((track) => track.stop());
+        video.pause();
+        const music = $('musicElement');
+        if (music) music.pause();
+
+        exporting = false;
+        $('exportBtn').disabled = !clips.length;
+        $('progressWrap').style.display = 'none';
+
+        const blob = new Blob(chunks, { type: mimeType });
+        if (blob.size) {
+          if (exportPreviewUrl) URL.revokeObjectURL(exportPreviewUrl);
+          exportPreviewUrl = URL.createObjectURL(blob);
+          $('downloadLink').href = exportPreviewUrl;
+          $('downloadLink').download = `jaick-reel-${Date.now()}.webm`;
+          $('downloadLink').style.display = 'inline-flex';
+          setStatus('Export complete. Download the reel and upload it manually to your social app.');
+        } else {
+          setStatus('No data was created during export. Try shorter clips.');
+        }
+      };
+
+      recorder.start(500);
+      setStatus('Rendering the reel with captions, overlays, and audio…');
+
+      try {
+        const music = $('musicElement');
+        if (audioUrl && music) {
+          music.src = audioUrl;
+          music.currentTime = 0;
+          music.play().catch(() => {});
+        }
+
+        let elapsed = 0;
+        for (const clip of clips) {
+          const clipStart = Number(clip.start) || 0;
+          const clipEnd = Number(clip.end) || clip.duration;
+          const clipLength = Math.max(0.05, clipEnd - clipStart);
+
+          video.src = clip.url;
+          video.load();
+          await waitForEvent(video, 'loadedmetadata');
+          video.currentTime = clipStart;
+          await waitForEvent(video, 'seeked');
+
+          await video.play();
+
+          await new Promise((resolve, reject) => {
+            let rafId = 0;
+            const timeout = setTimeout(() => {
+              cancelAnimationFrame(rafId);
+              reject(new Error('Export timed out while rendering a clip.'));
+            }, 20000);
+
+            const tick = () => {
+              if (!exporting) {
+                clearTimeout(timeout);
+                resolve();
+                return;
+              }
+
+              const current = Math.min(video.currentTime, clipEnd);
+              const localElapsed = current - clipStart;
+              renderFrame(ctx, video, width, height, elapsed + localElapsed, total);
+              const progress = Math.min(98, ((elapsed + localElapsed) / total) * 100);
+              $('progressBar').style.width = `${progress}%`;
+
+              if (current >= clipEnd || video.ended) {
+                clearTimeout(timeout);
+                cancelAnimationFrame(rafId);
+                video.pause();
+                resolve();
+                return;
+              }
+
+              rafId = requestAnimationFrame(tick);
+            };
+
+            rafId = requestAnimationFrame(tick);
+          });
+
+          elapsed += clipLength;
+          if (elapsed >= total) break;
+        }
+
+        if (recorder.state !== 'inactive') {
+          recorder.stop();
+        }
+      } catch (error) {
+        setStatus(error.message || 'Export failed due to a media error.');
+        if (recorder && recorder.state !== 'inactive') recorder.stop();
+      }
+    }
+
+    $('exportBtn').addEventListener('click', exportProject);
+
+    $('preset').addEventListener('change', () => {
+      const [w, h] = parsePreset();
+      const preview = $('previewWrap');
+      preview.style.aspectRatio = `${w} / ${h}`;
+      if (video.videoWidth && video.videoHeight) {
+        preview.style.aspectRatio = `${w} / ${h}`;
+      }
+    });
+
+    $('titleText').addEventListener('input', () => {
+      if (clips.length) setStatus('Title updated.');
+    });
+
+    $('musicElement').addEventListener('error', () => {
+      if (audioUrl) setStatus('The selected audio file could not be decoded by this browser.');
+    });
+
+    window.addEventListener('beforeunload', () => {
+      clips.forEach((clip) => URL.revokeObjectURL(clip.url));
+      if (audioUrl) URL.revokeObjectURL(audioUrl);
+      if (exportPreviewUrl) URL.revokeObjectURL(exportPreviewUrl);
+      if (audioContext && audioContext.close) audioContext.close();
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    });
+
+    updateProjectInfo();
+    updateAudioStatus();
+  </script>
 </body>
 </html>
