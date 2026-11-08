@@ -1,241 +1,175 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jaick AI Studio</title>
-<style>
-*{box-sizing:border-box}
-body{
- margin:0;background:#10111b;color:white;
- font-family:Arial,sans-serif;padding:20px;
-}
-.container{max-width:650px;margin:auto}
-header{text-align:center;padding:25px 10px}
-.logo{font-size:36px;font-weight:bold;color:#a78bfa}
-h1{font-size:27px}
-p{color:#b9bbce}
-.panel{
- background:#1d2030;padding:20px;
- border-radius:16px;margin:15px 0;
-}
-label{display:block;margin:15px 0 8px;font-weight:bold;color:#e2e8f0}
-textarea,select{
- width:100%;padding:13px;border-radius:9px;
- background:#10111b;color:white;
- border:1px solid #45485c;font-size:15px;
-}
-textarea{height:90px;resize:vertical}
-button{
- width:100%;padding:15px;border:0;
- border-radius:10px;background:#8055ed;
- color:white;font-size:17px;font-weight:bold;
- cursor:pointer;margin-top:15px;
- transition:background 0.3s;
-}
-button:hover{background:#6940d0}
-.upload{
- border:2px dashed #77758f;padding:20px;
- text-align:center;border-radius:12px;
- position:relative;overflow:hidden;
-}
-.img-container{
- position:relative;display:inline-block;
- max-width:100%;max-height:280px;margin-top:10px;
- border-radius:8px;overflow:hidden;
-}
-img{max-width:100%;max-height:280px;display:block}
-.scan-line{
- position:absolute;top:0;left:0;width:100%;height:4px;
- background:linear-gradient(90deg, transparent, #a78bfa, transparent);
- box-shadow:0 0 15px #a78bfa;
- display:none;animation:scan 2s infinite ease-in-out;
-}
-@keyframes scan{
- 0%{top:0%}
- 50%{top:95%}
- 100%{top:0%}
-}
-.progress-box{
- margin-top:15px;display:none;
-}
-.progress-bar-bg{
- background:#10111b;height:12px;border-radius:6px;
- overflow:hidden;border:1px solid #45485c;
-}
-.progress-bar-fill{
- background:linear-gradient(90deg, #8055ed, #a78bfa);
- height:100%;width:0%;transition:width 0.2s;
-}
-#status{color:#c4b5fd;text-align:center;font-size:14px;margin-top:8px}
-.result-box{
- display:none;margin-top:20px;text-align:center;
- background:#10111b;padding:15px;border-radius:12px;
-}
-.result-box video{width:100%;border-radius:8px;margin-bottom:10px}
-.download-btn{
- background:#10b981;text-decoration:none;display:inline-block;
- padding:10px 20px;border-radius:8px;color:white;font-weight:bold;
-}
-footer{text-align:center;color:#888;margin:25px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JAICK AI Studio - Video Recorder</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #38bdf8;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+      background: #1e293b;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+      background-color: #000;
+    }
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    button, a.btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    #startBtn {
+      background-color: #22c55e;
+      color: white;
+    }
+    #startBtn:hover {
+      background-color: #16a34a;
+    }
+    #stopBtn {
+      background-color: #ef4444;
+      color: white;
+    }
+    #stopBtn:hover {
+      background-color: #dc2626;
+    }
+    #stopBtn:disabled {
+      background-color: #64748b;
+      cursor: not-allowed;
+    }
+    #downloadBtn {
+      background-color: #3b82f6;
+      color: white;
+      display: none;
+    }
+    #downloadBtn:hover {
+      background-color: #2563eb;
+    }
+    .status {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-<header>
-<div class="logo">✦ JAICK AI</div>
-<h1>Jaick AI Studio</h1>
-<p>Your Personal AI Video Maker</p>
-</header>
 
-<div class="panel">
-<h2>🎬 Create Your AI Video</h2>
-
-<label>1. अपनी फोटो चुनें</label>
-<div class="upload">
-<input type="file" id="photo" accept="image/*">
-<div class="img-container" id="previewContainer" hidden>
- <img id="preview">
- <div class="scan-line" id="scanLine"></div>
-</div>
-</div>
-
-<label>2. वीडियो के बारे में लिखें</label>
-<textarea id="prompt" placeholder="जैसे: मेरी फोटो से एक शानदार डांस वीडियो बनाओ..."></textarea>
-
-<label>3. वीडियो स्टाइल चुनें</label>
-<select id="style">
-<option>Realistic Motion</option>
-<option>Bollywood Dance</option>
-<option>Cinematic Action</option>
-<option>3D Anime Style</option>
-<option>Vlog / Travel Effect</option>
-</select>
-
-<label>4. बैकग्राउंड म्यूज़िक</label>
-<select id="music">
-<option>High Beat Dance Track</option>
-<option>Slow Lo-Fi Beats</option>
-<option>Cinematic Dramatic</option>
-<option>No Music</option>
-</select>
-
-<button id="genBtn" onclick="generate()">✨ Generate AI Video</button>
-
-<div class="progress-box" id="progressBox">
- <div class="progress-bar-bg">
-  <div class="progress-bar-fill" id="progressFill"></div>
- </div>
- <p id="status"></p>
-</div>
-
-<div class="result-box" id="resultBox">
- <h3>🎉 आपका AI वीडियो तैयार है!</h3>
- <canvas id="videoCanvas" width="400" height="400" style="max-width:100%; border-radius:8px; background:#000;"></canvas>
- <br>
- <a id="downloadLink" class="download-btn" href="#" download="jaick-ai-video.png">⬇️ Download Video/Preview</a>
-</div>
-</div>
-
-<div class="panel">
-<h3>🚀 Jaick AI Features</h3>
-<p>📸 Photo to Video Engine</p>
-<p>✍️ Smart Text Prompting</p>
-<p>💃 Dynamic Motion & FX</p>
-<p>🎞️ Fast Rendering Pipeline</p>
-</div>
-
-<footer>© 2026 Jaick AI Studio</footer>
-</div>
-
-<script>
-const photo=document.getElementById("photo");
-const scanLine=document.getElementById("scanLine");
-const previewContainer=document.getElementById("previewContainer");
-const preview=document.getElementById("preview");
-
-photo.addEventListener("change",function(){
- const file=this.files[0];
- if(file){
-  preview.src=URL.createObjectURL(file);
-  previewContainer.hidden=false;
- }
-});
-
-function generate(){
- const file=photo.files[0];
- const prompt=document.getElementById("prompt").value;
- const progressBox=document.getElementById("progressBox");
- const progressFill=document.getElementById("progressFill");
- const status=document.getElementById("status");
- const resultBox=document.getElementById("resultBox");
- const genBtn=document.getElementById("genBtn");
-
- if(!file){
-  alert("पहले अपनी फोटो चुनें।");
-  return;
- }
- if(!prompt.trim()){
-  alert("वीडियो का विवरण लिखें।");
-  return;
- }
-
- genBtn.disabled=true;
- progressBox.style.display="block";
- resultBox.style.display="none";
- scanLine.style.display="block";
-
- let progress = 0;
- const steps = [
-  "इमेज एनालिसिस हो रही है...",
-  "AI Motion Frame जनरेट हो रहे हैं...",
-  "स्टाइल और इफ़ेक्ट्स अप्लाई हो रहे हैं...",
-  "साउंडट्रैक मिक्स किया जा रहा है...",
-  "अंतिम वीडियो रेंडर हो रहा है..."
- ];
-
- const interval = setInterval(() => {
-  progress += 2;
-  progressFill.style.width = progress + "%";
+  <h1>JAICK AI Studio</h1>
   
-  let stepIdx = Math.floor((progress / 100) * steps.length);
-  if(stepIdx >= steps.length) stepIdx = steps.length - 1;
-  status.textContent = `${steps[stepIdx]} (${progress}%)`;
+  <div class="video-container">
+    <video id="preview" autoplay playsinline muted></video>
+  </div>
 
-  if(progress >= 100){
-   clearInterval(interval);
-   scanLine.style.display="none";
-   genBtn.disabled=false;
-   status.textContent = "रेंडरिंग पूरी हुई!";
-   renderPreviewCanvas();
-   resultBox.style.display="block";
-  }
- }, 80);
-}
+  <div class="controls">
+    <button id="startBtn">🔴 Start Recording</button>
+    <button id="stopBtn" disabled>⏹️ Stop Recording</button>
+    <a id="downloadBtn" class="btn">⬇️ Download Video</a>
+  </div>
 
-function renderPreviewCanvas(){
- const canvas = document.getElementById("videoCanvas");
- const ctx = canvas.getContext("2d");
- const img = document.getElementById("preview");
- 
- canvas.width = img.naturalWidth || 400;
- canvas.height = img.naturalHeight || 400;
- 
- ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
- 
- // Overlay styling
- ctx.fillStyle = "rgba(128, 85, 237, 0.2)";
- ctx.fillRect(0, 0, canvas.width, canvas.height);
- 
- ctx.font = "bold 24px Arial";
- ctx.fillStyle = "#ffffff";
- ctx.shadowColor = "black";
- ctx.shadowBlur = 6;
- ctx.fillText("✦ JAICK AI GENERATED", 20, canvas.height - 30);
- 
- const downloadLink = document.getElementById("downloadLink");
- downloadLink.href = canvas.toDataURL("image/png");
-}
-</script>
+  <div class="status" id="statusText">Camera ready...</div>
+
+  <script>
+    const preview = document.getElementById('preview');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const statusText = document.getElementById('statusText');
+
+    let mediaRecorder;
+    let recordedChunks = [];
+    let stream;
+
+    // Start Camera Feed
+    async function initCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        preview.srcObject = stream;
+        statusText.innerText = "Camera Active - Press Start to Record";
+      } catch (err) {
+        console.error("Camera access error:", err);
+        statusText.innerText = "Error: Camera/Microphone access denied!";
+      }
+    }
+
+    // Start Recording
+    startBtn.addEventListener('click', () => {
+      recordedChunks = [];
+      mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          recordedChunks.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'video/webm' });
+        const videoURL = URL.createObjectURL(blob);
+        preview.srcObject = null;
+        preview.src = videoURL;
+        preview.controls = true;
+        preview.muted = false;
+        preview.play();
+
+        downloadBtn.href = videoURL;
+        downloadBtn.download = `jaick-video-${Date.now()}.webm`;
+        downloadBtn.style.display = 'inline-block';
+        statusText.innerText = "Recording finished! Click Download to save.";
+      };
+
+      mediaRecorder.start();
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+      downloadBtn.style.display = 'none';
+      statusText.innerText = "Recording in progress...";
+    });
+
+    // Stop Recording
+    stopBtn.addEventListener('click', () => {
+      mediaRecorder.stop();
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    });
+
+    initCamera();
+  </script>
 </body>
 </html>
