@@ -4,402 +4,111 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
-  <title>JAICK AI Studio - Video Recorder</title>
+  <title>JAICK AI Studio</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #f8fafc;
-      background: #0f172a;
-    }
-
-    h1 {
-      margin-bottom: 8px;
-      color: #38bdf8;
-      text-align: center;
-    }
-
-    .subtitle {
-      margin-bottom: 20px;
-      color: #94a3b8;
-      text-align: center;
-    }
-
-    .video-container {
-      width: 100%;
-      max-width: 720px;
-      overflow: hidden;
-      border-radius: 12px;
-      background: #1e293b;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, .5);
-    }
-
-    video {
-      display: block;
-      width: 100%;
-      max-height: 70vh;
-      background: #000;
-    }
-
-    .timer {
-      margin-top: 18px;
-      color: #f8fafc;
-      font-size: 24px;
-      font-variant-numeric: tabular-nums;
-      font-weight: 700;
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    button,
-    a.btn {
-      display: inline-block;
-      padding: 11px 18px;
-      border: 0;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 15px;
-      font-weight: 700;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      transition: background-color .2s ease, opacity .2s ease;
-    }
-
-    button:disabled {
-      background: #475569 !important;
-      cursor: not-allowed;
-      opacity: .7;
-    }
-
-    #startBtn { background: #22c55e; }
-    #startBtn:not(:disabled):hover { background: #16a34a; }
-    #pauseBtn { background: #f59e0b; }
-    #pauseBtn:not(:disabled):hover { background: #d97706; }
-    #stopBtn { background: #ef4444; }
-    #stopBtn:not(:disabled):hover { background: #dc2626; }
-    #retakeBtn { background: #64748b; }
-    #retakeBtn:not(:disabled):hover { background: #475569; }
-    #downloadBtn { display: none; background: #3b82f6; }
-    #downloadBtn:hover { background: #2563eb; }
-
-    .status {
-      min-height: 24px;
-      margin-top: 14px;
-      color: #cbd5e1;
-      text-align: center;
-    }
-
-    .hint {
-      max-width: 720px;
-      margin-top: 10px;
-      color: #94a3b8;
-      font-size: 13px;
-      line-height: 1.5;
-      text-align: center;
-    }
-
-    @media (max-width: 480px) {
-      body { padding: 16px; }
-      button, a.btn { padding: 10px 14px; font-size: 14px; }
-    }
+    :root{color-scheme:dark;--bg:#0f172a;--panel:#17243a;--line:#334155;--muted:#9aabc2;--text:#f8fafc;--blue:#38bdf8;--green:#22c55e}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;padding:24px;color:var(--text);background:var(--bg);font:16px 'Segoe UI',Tahoma,sans-serif}
+    main{max-width:1000px;margin:auto}header{text-align:center;margin:10px 0 24px}h1{margin:0;color:var(--blue)}header p{color:var(--muted);margin:8px 0 0}
+    .tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:18px}.tab,button,.button{border:0;border-radius:9px;padding:11px 15px;color:white;font-weight:700;font-size:14px;cursor:pointer;background:#334155}.tab[aria-selected="true"]{background:#0369a1}.tab:focus-visible,button:focus-visible,.button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #7dd3fc;outline-offset:2px}
+    .panel{display:none;padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:14px}.panel.active{display:block}.panel h2{margin:0 0 8px}.description,.note{color:var(--muted);line-height:1.55}.stage{width:100%;max-height:58vh;min-height:220px;background:#020617;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin:16px 0}.stage video,.stage canvas{display:block;max-width:100%;max-height:58vh}.stage video{width:100%}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}.controls button.primary{background:#16a34a}.controls button.danger{background:#dc2626}.controls button.blue{background:#2563eb}.controls button:disabled{opacity:.55;cursor:not-allowed}.status{min-height:24px;color:#cbd5e1;margin:14px 0 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.field{display:flex;flex-direction:column;gap:6px;color:#dbeafe}.field input,.field textarea,.field select{width:100%;padding:10px;border:1px solid #475569;border-radius:8px;background:#0f172a;color:var(--text)}textarea{min-height:95px;resize:vertical}.field small{color:var(--muted)}input[type=file]{padding:8px}.download{display:none;background:#2563eb;text-decoration:none}.timer{font-size:24px;font-variant-numeric:tabular-nums;font-weight:700}
+    @media(max-width:560px){body{padding:14px}.panel{padding:14px}.tab{flex:1 1 43%}.stage{min-height:180px}}
   </style>
 </head>
 <body>
-  <h1>JAICK AI Studio</h1>
-  <p class="subtitle">Video Recorder</p>
+<main>
+  <header><h1>JAICK AI Studio</h1><p>Record, create, edit aur voiceover — sab ek jagah</p></header>
+  <nav class="tabs" role="tablist" aria-label="Studio tools">
+    <button class="tab" role="tab" aria-selected="true" aria-controls="recorderPanel" data-panel="recorderPanel">🎥 Recorder</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="photoPanel" data-panel="photoPanel">🖼️ Photo to Video</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="textPanel" data-panel="textPanel">✍️ Text to Video</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="editPanel" data-panel="editPanel">🎞️ Edit / Dub</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="voicePanel" data-panel="voicePanel">🗣️ AI Voice</button>
+  </nav>
 
-  <div class="video-container">
-    <video id="preview" autoplay playsinline muted></video>
-  </div>
+  <section class="panel active" id="recorderPanel" role="tabpanel">
+    <h2>Video Recorder</h2><p class="description">Camera se video record karein, pause/resume karein, phir preview ya download karein.</p>
+    <div class="stage"><video id="cameraPreview" autoplay playsinline muted></video></div>
+    <div class="controls"><span class="timer" id="recordTimer">00:00</span><button class="primary" id="startRecord" disabled>🔴 Record</button><button id="pauseRecord" disabled>⏸️ Pause</button><button class="danger" id="stopRecord" disabled>⏹️ Stop</button><button id="againRecord" hidden>🔄 Record Again</button><a class="button download" id="recordDownload">⬇️ Download</a></div>
+    <p class="status" id="recordStatus" role="status" aria-live="polite">Camera permission ka intezar hai...</p>
+  </section>
 
-  <div class="timer" id="timer" aria-live="off">00:00</div>
+  <section class="panel" id="photoPanel" role="tabpanel">
+    <h2>Photo to Video</h2><p class="description">Photos chun kar simple slideshow video banayein. Video browser mein locally render hota hai.</p>
+    <div class="grid"><label class="field">Photos (multiple)<input id="photoFiles" type="file" accept="image/*" multiple><small>Kam se kam ek image select karein.</small></label><label class="field">Har photo ka duration (seconds)<input id="photoDuration" type="number" min="1" max="15" value="3"></label></div>
+    <div class="stage"><canvas id="photoCanvas" width="1280" height="720"></canvas></div>
+    <div class="controls"><button class="primary" id="makePhotoVideo">Create Video</button><a class="button download" id="photoDownload">⬇️ Download Video</a></div><p class="status" id="photoStatus" role="status" aria-live="polite">Photos select karke Create Video dabayein.</p>
+  </section>
 
-  <div class="controls">
-    <button id="startBtn" type="button" disabled>🔴 Start Recording</button>
-    <button id="pauseBtn" type="button" disabled>⏸️ Pause</button>
-    <button id="stopBtn" type="button" disabled>⏹️ Stop</button>
-    <button id="retakeBtn" type="button" hidden>🔄 Record Again</button>
-    <a id="downloadBtn" class="btn" aria-label="Download recorded video">⬇️ Download Video</a>
-  </div>
+  <section class="panel" id="textPanel" role="tabpanel">
+    <h2>Text to Video</h2><p class="description">Text prompt ko animated title-card video mein badlein. Yeh text animation hai, generative AI scene/video nahi.</p>
+    <div class="grid"><label class="field">Video mein dikhane wala text<textarea id="videoText" maxlength="300" placeholder="Apna title ya message likhein..."></textarea></label><label class="field">Background color<input id="textColor" type="color" value="#0f172a"></label><label class="field">Duration (seconds)<input id="textDuration" type="number" min="2" max="30" value="8"></label></div>
+    <div class="stage"><canvas id="textCanvas" width="1280" height="720"></canvas></div>
+    <div class="controls"><button class="primary" id="makeTextVideo">Create Video</button><a class="button download" id="textDownload">⬇️ Download Video</a></div><p class="status" id="textStatus" role="status" aria-live="polite">Text likh kar Create Video dabayein.</p>
+  </section>
 
-  <p class="status" id="statusText" role="status" aria-live="polite">Camera permission ka intezar hai...</p>
-  <p class="hint">Camera aur microphone chalane ke liye permission dein. Browser mein camera access ke liye HTTPS ya localhost zaroori hai.</p>
+  <section class="panel" id="editPanel" role="tabpanel">
+    <h2>Video Editing & Sound Dubbing</h2><p class="description">Video trim points set karein, optional voiceover/music add karein, aur edited result export karein (WebM).</p>
+    <div class="grid"><label class="field">Video file<input id="editVideoFile" type="file" accept="video/*"></label><label class="field">Voiceover / music (optional)<input id="dubAudioFile" type="file" accept="audio/*"></label><label class="field">Start time (seconds)<input id="trimStart" type="number" min="0" step="0.1" value="0"></label><label class="field">End time (seconds)<input id="trimEnd" type="number" min="0" step="0.1" placeholder="Video ke end tak"></label><label class="field">Original video volume <input id="originalVolume" type="range" min="0" max="1" step="0.05" value="0.65"></label><label class="field">Voiceover volume <input id="dubVolume" type="range" min="0" max="1" step="0.05" value="1"></label></div>
+    <div class="stage"><video id="editPreview" controls playsinline></video></div><audio id="dubPreview" controls hidden></audio>
+    <div class="controls"><button class="primary" id="exportEdit" disabled>Export Edited Video</button><a class="button download" id="editDownload">⬇️ Download Edited Video</a></div><p class="status" id="editStatus" role="status" aria-live="polite">Video select karein. Browser ke MediaRecorder support ki zaroorat hai.</p>
+  </section>
 
-  <script>
-    const preview = document.getElementById('preview');
-    const startBtn = document.getElementById('startBtn');
-    const pauseBtn = document.getElementById('pauseBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const retakeBtn = document.getElementById('retakeBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const statusText = document.getElementById('statusText');
-    const timerText = document.getElementById('timer');
+  <section class="panel" id="voicePanel" role="tabpanel">
+    <h2>AI Voice / Voice Preview</h2><p class="description">Browser mein available text-to-speech voices se apna text sun kar dekhein. Browser TTS ko downloadable audio banane ke liye alag AI/TTS server ya provider integration chahiye.</p>
+    <div class="grid"><label class="field">Voice ke liye text<textarea id="voiceText" maxlength="1000" placeholder="Yahan apna voiceover script likhein..."></textarea></label><label class="field">Voice<select id="voiceSelect"><option value="">Default browser voice</option></select></label><label class="field">Speaking speed<input id="voiceRate" type="range" min="0.6" max="1.5" step="0.1" value="1"></label></div>
+    <div class="controls"><button class="primary" id="speakText">▶️ Voice Preview</button><button id="stopSpeech">⏹️ Stop Voice</button></div><p class="status" id="voiceStatus" role="status" aria-live="polite">Voice preview browser ke speech synthesis par nirbhar hai.</p>
+  </section>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  document.querySelectorAll('.tab').forEach((tab) => tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach((item) => item.setAttribute('aria-selected', String(item === tab)));
+    document.querySelectorAll('.panel').forEach((panel) => panel.classList.toggle('active', panel.id === tab.dataset.panel));
+  }));
+  function setDownload(link, blob, name) { if (link.dataset.url) URL.revokeObjectURL(link.dataset.url); const url = URL.createObjectURL(blob); link.dataset.url = url; link.href = url; link.download = name; link.style.display = 'inline-block'; }
+  function hideDownload(link) { link.style.display = 'none'; if (link.dataset.url) URL.revokeObjectURL(link.dataset.url); link.dataset.url = ''; link.removeAttribute('href'); }
+  function supportedMime() { return ['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find((type) => window.MediaRecorder && MediaRecorder.isTypeSupported(type)) || ''; }
+  function formatTime(ms) { const sec = Math.floor(ms / 1000), h = Math.floor(sec / 3600), m = Math.floor(sec / 60) % 60, s = sec % 60; return h ? `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` : `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
 
-    let stream = null;
-    let mediaRecorder = null;
-    let recordedChunks = [];
-    let recordingUrl = null;
-    let timerInterval = null;
-    let elapsedBeforeCurrentRun = 0;
-    let runStartedAt = 0;
+  // Camera recorder
+  const camera = $('cameraPreview'), recordStatus = $('recordStatus'); let cameraStream = null, recorder = null, chunks = [], recordUrl = null, tick = null, elapsed = 0, runAt = 0;
+  async function initCamera() { if (!navigator.mediaDevices?.getUserMedia) { recordStatus.textContent = 'Camera ke liye HTTPS/localhost aur supported browser zaroori hai.'; return; } recordStatus.textContent = 'Camera/microphone permission maangi ja rahi hai...'; try { cameraStream = await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1280},height:{ideal:720}},audio:true}); camera.srcObject = cameraStream; $('startRecord').disabled = false; recordStatus.textContent = 'Camera ready hai.'; } catch (e) { recordStatus.textContent = `Camera access nahi mila (${e.name || 'error'}). Permission aur device check karein.`; } }
+  $('startRecord').addEventListener('click', () => { if (!cameraStream?.active) return; if (!window.MediaRecorder) { recordStatus.textContent = 'Is browser mein recording supported nahi hai.'; return; } hideDownload($('recordDownload')); chunks = []; elapsed = 0; $('recordTimer').textContent = '00:00'; try { recorder = new MediaRecorder(cameraStream, supportedMime() ? {mimeType:supportedMime()} : {}); } catch { recordStatus.textContent = 'Recorder start nahi ho saka.'; return; } recorder.ondataavailable = (e) => {if(e.data.size) chunks.push(e.data)}; recorder.onstop = () => { clearInterval(tick); tick = null; $('recordTimer').textContent = formatTime(elapsed); const blob = new Blob(chunks,{type:recorder.mimeType || 'video/webm'}); if (!blob.size) { recordStatus.textContent = 'Video save nahi hui. Dobara koshish karein.'; return; } if (recordUrl) URL.revokeObjectURL(recordUrl); recordUrl = URL.createObjectURL(blob); camera.srcObject = null; camera.src = recordUrl; camera.controls = true; camera.muted = false; camera.play().catch(()=>{}); setDownload($('recordDownload'),blob,`jaick-recording-${Date.now()}.webm`); $('againRecord').hidden = false; recordStatus.textContent = 'Recording complete!'; };
+    recorder.start(500); runAt = Date.now(); tick = setInterval(() => $('recordTimer').textContent = formatTime(elapsed + Date.now() - runAt),250); $('startRecord').disabled = true; $('pauseRecord').disabled = false; $('stopRecord').disabled = false; $('againRecord').hidden = true; recordStatus.textContent = 'Recording chal rahi hai...'; });
+  $('pauseRecord').addEventListener('click', () => { if (!recorder) return; if (recorder.state === 'recording') { recorder.pause(); elapsed += Date.now()-runAt; $('pauseRecord').textContent = '▶️ Resume'; recordStatus.textContent = 'Recording pause hai.'; } else if (recorder.state === 'paused') { recorder.resume(); runAt = Date.now(); $('pauseRecord').textContent = '⏸️ Pause'; recordStatus.textContent = 'Recording phir se chal rahi hai...'; } });
+  $('stopRecord').addEventListener('click', () => { if (recorder && recorder.state !== 'inactive') { if (recorder.state === 'recording') elapsed += Date.now()-runAt; recorder.stop(); $('pauseRecord').disabled = true; $('stopRecord').disabled = true; $('pauseRecord').textContent = '⏸️ Pause'; recordStatus.textContent = 'Video process ho rahi hai...'; } });
+  $('againRecord').addEventListener('click', async () => { camera.pause(); camera.removeAttribute('src'); camera.controls = false; camera.muted = true; if (recordUrl) URL.revokeObjectURL(recordUrl); recordUrl = null; hideDownload($('recordDownload')); $('againRecord').hidden = true; if (cameraStream?.active) { camera.srcObject = cameraStream; camera.play().catch(()=>{}); $('startRecord').disabled = false; } else await initCamera(); });
+  initCamera();
 
-    function formatTime(milliseconds) {
-      const totalSeconds = Math.floor(milliseconds / 1000);
-      const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-      const seconds = (totalSeconds % 60).toString().padStart(2, '0');
-      const hours = Math.floor(totalSeconds / 3600);
-      return hours > 0
-        ? `${hours.toString().padStart(2, '0')}:${minutes.padStart(2, '0')}:${seconds}`
-        : `${minutes}:${seconds}`;
-    }
+  // Browser-side canvas video generation for photo slideshows and animated text.
+  async function renderCanvasVideo(canvas, seconds, drawFrame, status, download, filename) {
+    if (!window.MediaRecorder || !canvas.captureStream) { status.textContent = 'Canvas video export is is browser mein supported nahi hai.'; return; }
+    const mime = supportedMime(); if (!mime) { status.textContent = 'WebM recording supported nahi hai. Updated Chrome/Edge/Firefox try karein.'; return; }
+    hideDownload(download); const stream = canvas.captureStream(30); const parts = []; let mr;
+    try { mr = new MediaRecorder(stream,{mimeType:mime}); } catch { status.textContent = 'Video export start nahi ho saka.'; stream.getTracks().forEach(t=>t.stop()); return; }
+    mr.ondataavailable = e => { if (e.data.size) parts.push(e.data); };
+    mr.onstop = () => { stream.getTracks().forEach(t=>t.stop()); const blob = new Blob(parts,{type:mime}); if(blob.size) { setDownload(download,blob,filename); status.textContent = 'Video ready hai — download kar sakte hain.'; } else status.textContent = 'Video export nahi ho saki.'; };
+    mr.start(250); const start = performance.now(); status.textContent = 'Video create ho rahi hai...';
+    const frame = (now) => { const progress = Math.min((now-start)/(seconds*1000),1); drawFrame(progress); if(progress < 1) requestAnimationFrame(frame); else setTimeout(()=>{if(mr.state!=='inactive')mr.stop()},150); };
+    requestAnimationFrame(frame);
+  }
+  $('makePhotoVideo').addEventListener('click', async () => { const files = [...$('photoFiles').files]; const status=$('photoStatus'); if(!files.length){status.textContent='Pehle ek ya zyada photos select karein.';return;} const duration=Number($('photoDuration').value); if(!Number.isFinite(duration)||duration<1||duration>15){status.textContent='Har photo ka duration 1 se 15 seconds ke beech rakhein.';return;} status.textContent='Photos load ho rahi hain...'; const images=await Promise.all(files.map(file=>new Promise(resolve=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>resolve(null);img.src=URL.createObjectURL(file)}))); const valid=images.filter(Boolean); if(!valid.length){status.textContent='Photos load nahi ho sakin.';return;} const canvas=$('photoCanvas'),ctx=canvas.getContext('2d'),seconds=valid.length*duration; await renderCanvasVideo(canvas,seconds,(p)=>{const index=Math.min(Math.floor(p*valid.length),valid.length-1), local=(p*valid.length)%1, img=valid[index], scale=Math.max(canvas.width/img.width,canvas.height/img.height), w=img.width*scale,h=img.height*scale;ctx.fillStyle='#020617';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.globalAlpha=Math.min(1,local*5,(1-local)*5);ctx.drawImage(img,(canvas.width-w)/2,(canvas.height-h)/2,w,h);ctx.globalAlpha=1;},status,$('photoDownload'),`jaick-slideshow-${Date.now()}.webm`); images.forEach(img=>{if(img?.src.startsWith('blob:'))URL.revokeObjectURL(img.src)}); });
+  $('makeTextVideo').addEventListener('click', async () => { const text=$('videoText').value.trim(),seconds=Number($('textDuration').value),status=$('textStatus'); if(!text){status.textContent='Pehle video text likhein.';return;} if(!Number.isFinite(seconds)||seconds<2||seconds>30){status.textContent='Duration 2 se 30 seconds ke beech rakhein.';return;} const canvas=$('textCanvas'),ctx=canvas.getContext('2d'),bg=$('textColor').value; await renderCanvasVideo(canvas,seconds,(p)=>{ctx.fillStyle=bg;ctx.fillRect(0,0,canvas.width,canvas.height);const pulse=.96+.04*Math.sin(p*Math.PI*8);ctx.save();ctx.translate(canvas.width/2,canvas.height/2);ctx.scale(pulse,pulse);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor='rgba(0,0,0,.4)';ctx.shadowBlur=18;const words=text.split(/\s+/);let lines=[],line='';ctx.font='700 64px Segoe UI, sans-serif';for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>1050&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line);const lineHeight=78;lines.forEach((value,i)=>ctx.fillText(value,0,(i-(lines.length-1)/2)*lineHeight,1050));ctx.restore();},status,$('textDownload'),`jaick-text-video-${Date.now()}.webm`); });
 
-    function currentElapsedTime() {
-      if (!mediaRecorder || mediaRecorder.state !== 'recording') {
-        return elapsedBeforeCurrentRun;
-      }
-      return elapsedBeforeCurrentRun + (Date.now() - runStartedAt);
-    }
+  // Video trim + optional audio mix. Browser encodes the canvas output as WebM.
+  const editVideo=$('editPreview'),dubAudio=$('dubPreview');let videoUrl=null,audioUrl=null,editAudioContext=null,videoSource=null,videoGain=null,dubSource=null,dubGain=null,exporting=false;
+  $('editVideoFile').addEventListener('change',()=>{const file=$('editVideoFile').files[0];if(!file)return;if(videoUrl)URL.revokeObjectURL(videoUrl);videoUrl=URL.createObjectURL(file);editVideo.src=videoUrl;$('exportEdit').disabled=false;hideDownload($('editDownload'));$('editStatus').textContent='Video ready hai. Trim settings optional hain.';});
+  $('dubAudioFile').addEventListener('change',()=>{const file=$('dubAudioFile').files[0];if(audioUrl)URL.revokeObjectURL(audioUrl);audioUrl=file?URL.createObjectURL(file):null;dubAudio.hidden=!file;if(file){dubAudio.src=audioUrl;$('editStatus').textContent='Voiceover/music add ho gaya. Export dabakar mix karein.';}});
+  $('exportEdit').addEventListener('click',async()=>{const status=$('editStatus'),canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');if(!editVideo.src||!editVideo.videoWidth){status.textContent='Pehle playable video select karein.';return;}if(!window.MediaRecorder||!canvas.captureStream){status.textContent='Video export is browser mein supported nahi.';return;}const mime=supportedMime();if(!mime){status.textContent='WebM recording supported nahi hai.';return;}const start=Math.max(0,Number($('trimStart').value)||0),end=Number($('trimEnd').value)||editVideo.duration;if(!Number.isFinite(end)||start>=end||end>editVideo.duration){status.textContent=`Valid trim range dein (0–${editVideo.duration.toFixed(1)} seconds).`;return;}try{editAudioContext ||= new AudioContext();if(!videoSource){videoSource=editAudioContext.createMediaElementSource(editVideo);videoGain=editAudioContext.createGain();videoSource.connect(videoGain);videoGain.connect(editAudioContext.destination);}videoGain.gain.value=Number($('originalVolume').value);if(audioUrl&&!dubSource){dubSource=editAudioContext.createMediaElementSource(dubAudio);dubGain=editAudioContext.createGain();dubSource.connect(dubGain);dubGain.connect(editAudioContext.destination);}if(dubGain)dubGain.gain.value=Number($('dubVolume').value);await editAudioContext.resume();}catch(e){status.textContent='Audio mix setup nahi ho saka: '+e.message;return;}
+    canvas.width=editVideo.videoWidth;canvas.height=editVideo.videoHeight;const videoStream=canvas.captureStream(30),audioStream=editAudioContext.createMediaStreamDestination();videoGain.connect(audioStream);if(dubGain)dubGain.connect(audioStream);const mixed=new MediaStream([...videoStream.getVideoTracks(),...audioStream.stream.getAudioTracks()]),parts=[];let mr;try{mr=new MediaRecorder(mixed,{mimeType:mime});}catch{status.textContent='Export recorder start nahi ho saka.';mixed.getTracks().forEach(t=>t.stop());return;}hideDownload($('editDownload'));exporting=true;mr.ondataavailable=e=>{if(e.data.size)parts.push(e.data)};mr.onerror=()=>{exporting=false;status.textContent='Export mein error aaya.'};mr.onstop=()=>{exporting=false;mixed.getTracks().forEach(t=>t.stop());editVideo.pause();dubAudio.pause();const blob=new Blob(parts,{type:mime});if(blob.size){setDownload($('editDownload'),blob,`jaick-edited-${Date.now()}.webm`);status.textContent='Edited video ready hai — download karein.'}else status.textContent='Exported video khali hai. Dobara koshish karein.'};
+    editVideo.currentTime=start;await new Promise(resolve=>editVideo.addEventListener('seeked',resolve,{once:true}));ctx.drawImage(editVideo,0,0,canvas.width,canvas.height);mr.start(250);if(audioUrl){dubAudio.currentTime=0;dubAudio.play().catch(()=>{})}await editVideo.play();status.textContent='Video edit/export ho rahi hai...';const draw=()=>{if(!exporting)return;if(editVideo.readyState>=2)ctx.drawImage(editVideo,0,0,canvas.width,canvas.height);if(editVideo.currentTime>=end||editVideo.ended){if(mr.state!=='inactive')mr.stop();return}requestAnimationFrame(draw)};requestAnimationFrame(draw);});
 
-    function updateTimer() {
-      timerText.textContent = formatTime(currentElapsedTime());
-    }
-
-    function stopTimer() {
-      if (timerInterval !== null) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-      }
-      updateTimer();
-    }
-
-    function releaseRecordingUrl() {
-      if (recordingUrl) {
-        URL.revokeObjectURL(recordingUrl);
-        recordingUrl = null;
-      }
-      downloadBtn.removeAttribute('href');
-      downloadBtn.style.display = 'none';
-    }
-
-    function setCameraReady() {
-      preview.srcObject = stream;
-      preview.controls = false;
-      preview.muted = true;
-      preview.play().catch(() => {});
-      startBtn.disabled = false;
-      statusText.textContent = 'Camera ready hai. Recording shuru kar sakte hain.';
-    }
-
-    async function initCamera() {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        statusText.textContent = 'Is browser mein camera access available nahi hai. HTTPS ya localhost par kholen.';
-        startBtn.disabled = true;
-        return;
-      }
-
-      startBtn.disabled = true;
-      statusText.textContent = 'Camera aur microphone permission maangi ja rahi hai...';
-
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: { width: { ideal: 1280 }, height: { ideal: 720 } },
-          audio: true
-        });
-        setCameraReady();
-      } catch (error) {
-        console.error('Camera access error:', error);
-        const messages = {
-          NotAllowedError: 'Camera/microphone permission nahi mili. Browser settings mein permission allow karein.',
-          NotFoundError: 'Camera ya microphone device nahi mila.',
-          NotReadableError: 'Camera/microphone kisi aur app mein use ho raha hai.',
-          OverconstrainedError: 'Camera requested settings support nahi karta.'
-        };
-        statusText.textContent = messages[error.name] || 'Camera/microphone shuru nahi ho saka. Permission aur device check karein.';
-        startBtn.disabled = true;
-      }
-    }
-
-    function chooseMimeType() {
-      if (!window.MediaRecorder || !MediaRecorder.isTypeSupported) return '';
-      const options = [
-        'video/webm;codecs=vp9,opus',
-        'video/webm;codecs=vp8,opus',
-        'video/webm'
-      ];
-      return options.find((type) => MediaRecorder.isTypeSupported(type)) || '';
-    }
-
-    function startRecording() {
-      if (!stream || !stream.active) {
-        statusText.textContent = 'Camera connection nahi hai. Record Again dabakar camera dobara shuru karein.';
-        startBtn.disabled = true;
-        return;
-      }
-
-      if (!window.MediaRecorder) {
-        statusText.textContent = 'Is browser mein video recording supported nahi hai.';
-        return;
-      }
-
-      releaseRecordingUrl();
-      recordedChunks = [];
-      elapsedBeforeCurrentRun = 0;
-      timerText.textContent = '00:00';
-      preview.controls = false;
-      preview.muted = true;
-
-      try {
-        const mimeType = chooseMimeType();
-        mediaRecorder = mimeType
-          ? new MediaRecorder(stream, { mimeType })
-          : new MediaRecorder(stream);
-      } catch (error) {
-        console.error('Could not create recorder:', error);
-        statusText.textContent = 'Recording shuru nahi ho saki. Browser ya camera format check karein.';
-        return;
-      }
-
-      mediaRecorder.addEventListener('dataavailable', (event) => {
-        if (event.data && event.data.size > 0) recordedChunks.push(event.data);
-      });
-
-      mediaRecorder.addEventListener('error', (event) => {
-        console.error('Recording error:', event.error || event);
-        statusText.textContent = 'Recording mein error aaya. Dobara koshish karein.';
-      });
-
-      mediaRecorder.addEventListener('stop', () => {
-        stopTimer();
-        const type = mediaRecorder.mimeType || 'video/webm';
-        const blob = new Blob(recordedChunks, { type });
-
-        startBtn.disabled = true;
-        pauseBtn.disabled = true;
-        stopBtn.disabled = true;
-        retakeBtn.hidden = false;
-
-        if (blob.size === 0) {
-          statusText.textContent = 'Video save nahi hui. Dobara recording karke dekhein.';
-          return;
-        }
-
-        recordingUrl = URL.createObjectURL(blob);
-        preview.srcObject = null;
-        preview.src = recordingUrl;
-        preview.controls = true;
-        preview.muted = false;
-        preview.load();
-        preview.play().catch(() => {});
-
-        const extension = type.includes('mp4') ? 'mp4' : 'webm';
-        downloadBtn.href = recordingUrl;
-        downloadBtn.download = `jaick-video-${Date.now()}.${extension}`;
-        downloadBtn.style.display = 'inline-block';
-        statusText.textContent = 'Recording complete! Video preview karein ya download karein.';
-      });
-
-      try {
-        mediaRecorder.start(1000);
-        runStartedAt = Date.now();
-        timerInterval = window.setInterval(updateTimer, 250);
-        startBtn.disabled = true;
-        pauseBtn.disabled = false;
-        pauseBtn.textContent = '⏸️ Pause';
-        stopBtn.disabled = false;
-        retakeBtn.hidden = true;
-        downloadBtn.style.display = 'none';
-        statusText.textContent = 'Recording chal rahi hai...';
-      } catch (error) {
-        console.error('Could not start recording:', error);
-        statusText.textContent = 'Recording shuru nahi ho saki. Dobara koshish karein.';
-        startBtn.disabled = false;
-        pauseBtn.disabled = true;
-        stopBtn.disabled = true;
-      }
-    }
-
-    function togglePause() {
-      if (!mediaRecorder) return;
-
-      if (mediaRecorder.state === 'recording') {
-        mediaRecorder.pause();
-        elapsedBeforeCurrentRun += Date.now() - runStartedAt;
-        pauseBtn.textContent = '▶️ Resume';
-        statusText.textContent = 'Recording pause hai.';
-      } else if (mediaRecorder.state === 'paused') {
-        mediaRecorder.resume();
-        runStartedAt = Date.now();
-        pauseBtn.textContent = '⏸️ Pause';
-        statusText.textContent = 'Recording phir se chal rahi hai...';
-      }
-      updateTimer();
-    }
-
-    function stopRecording() {
-      if (mediaRecorder && (mediaRecorder.state === 'recording' || mediaRecorder.state === 'paused')) {
-        if (mediaRecorder.state === 'recording') {
-          elapsedBeforeCurrentRun += Date.now() - runStartedAt;
-        }
-        stopTimer();
-        mediaRecorder.stop();
-        pauseBtn.disabled = true;
-        stopBtn.disabled = true;
-        statusText.textContent = 'Video process ho rahi hai...';
-      }
-    }
-
-    async function recordAgain() {
-      stopTimer();
-      releaseRecordingUrl();
-      recordedChunks = [];
-      elapsedBeforeCurrentRun = 0;
-      timerText.textContent = '00:00';
-      preview.removeAttribute('src');
-      preview.controls = false;
-      preview.muted = true;
-
-      if (stream && stream.active) {
-        setCameraReady();
-        retakeBtn.hidden = true;
-        return;
-      }
-
-      startBtn.disabled = true;
-      retakeBtn.hidden = true;
-      await initCamera();
-      retakeBtn.hidden = false;
-    }
-
-    startBtn.addEventListener('click', startRecording);
-    pauseBtn.addEventListener('click', togglePause);
-    stopBtn.addEventListener('click', stopRecording);
-    retakeBtn.addEventListener('click', recordAgain);
-
-    window.addEventListener('beforeunload', () => {
-      stopTimer();
-      if (stream) stream.getTracks().forEach((track) => track.stop());
-      releaseRecordingUrl();
-    });
-
-    initCamera();
-  </script>
+  // Browser speech synthesis is a preview only; it is not saved/exported as audio.
+  function populateVoices(){const select=$('voiceSelect'),current=select.value,voices=window.speechSynthesis?.getVoices()||[];select.innerHTML='<option value="">Default browser voice</option>';voices.forEach((voice,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=`${voice.name} (${voice.lang})`;select.append(option)});if(current)select.value=current;}
+  if('speechSynthesis' in window){populateVoices();speechSynthesis.addEventListener('voiceschanged',populateVoices)}else $('voiceStatus').textContent='Is browser mein speech synthesis available nahi hai.';
+  $('speakText').addEventListener('click',()=>{const text=$('voiceText').value.trim();if(!text){$('voiceStatus').textContent='Voice script likhein.';return}if(!window.speechSynthesis){$('voiceStatus').textContent='Browser TTS available nahi hai.';return}speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text),voices=speechSynthesis.getVoices(),choice=$('voiceSelect').value;if(choice!==''&&voices[Number(choice)])utterance.voice=voices[Number(choice)];utterance.rate=Number($('voiceRate').value);utterance.onstart=()=>$('voiceStatus').textContent='Voice preview chal raha hai...';utterance.onend=()=>$('voiceStatus').textContent='Preview complete. Yeh audio file mein save nahi hua.';utterance.onerror=()=>$('voiceStatus').textContent='Voice preview play nahi ho saka.';speechSynthesis.speak(utterance)});
+  $('stopSpeech').addEventListener('click',()=>{window.speechSynthesis?.cancel();$('voiceStatus').textContent='Voice preview stop kar diya.'});
+  window.addEventListener('beforeunload',()=>{if(cameraStream)cameraStream.getTracks().forEach(track=>track.stop());if(recordUrl)URL.revokeObjectURL(recordUrl);if(videoUrl)URL.revokeObjectURL(videoUrl);if(audioUrl)URL.revokeObjectURL(audioUrl);document.querySelectorAll('a[data-url]').forEach(a=>a.dataset.url&&URL.revokeObjectURL(a.dataset.url));window.speechSynthesis?.cancel()});
+</script>
 </body>
 </html>
