@@ -1,49 +1,49 @@
-# jaick-ai-studio
+# JAICK AI Studio
 
-My AI Video Editor Android App
+AI-powered browser-based reel editor for creating short-form social videos.
 
 ## Overview
-Jaick AI Studio is an Android-first AI video editor designed to make video editing simple, fast, and creative. The app combines editing tools with AI-powered features to help users create polished videos from clips, text, and media assets.
+JAICK AI Studio is a lightweight web app for editing short videos directly in the browser. It lets users add clips, trim segments, reorder media, add titles and subtitles, adjust audio, apply visual filters, and export a final reel for social platforms.
 
 ## Features
-- AI-assisted video editing workflow
-- Smart trimming and scene organization
-- Text and subtitle overlays
-- Media import and project management
-- Fast Android UI optimized for mobile editing
-- Desktop-friendly documentation and project structure for development workflows
+- Add multiple video clips from local files
+- Reorder clips in the timeline
+- Trim clip in/out points
+- Add title overlays and captions
+- Choose social presets for Reel, Shorts, TikTok, square, and landscape videos
+- Adjust video/audio levels and background music
+- Apply visual filters (warm, cool, mono, etc.)
+- Export the final edited video locally in the browser
+- Works as a local-first project editor without a backend
 
 ## Platforms
-- Android mobile app
-- Desktop support for project development, build, and testing workflows
+- Web app (browser-based)
+- Works on desktop and laptop browsers
+- Mobile-friendly UI for local editing workflows
 
-## Tech Stack
-- Kotlin
-- Android Studio
-- Jetpack components
-- AI / media processing integrations
+## Project Type
+This repository contains a frontend-only editing prototype built with HTML, CSS, and JavaScript.
 
-## Getting Started
+## Run Locally
+### Option 1: Open directly
+1. Download or clone the repository
+2. Open `index.html` in a modern browser
 
-### Prerequisites
-- Android Studio
-- JDK 17 or newer
-- Android SDK configured
-
-### Run the app
-1. Clone the repository
-2. Open the project in Android Studio
-3. Sync Gradle files
-4. Select an Android device or emulator
-5. Click Run
+### Option 2: Use a local web server
+```bash
+python -m http.server 8000
+```
+Then open:
+```text
+http://localhost:8000
+```
 
 ## Project Structure
-- `app/` — Android application source
-- `gradle/` — Gradle wrapper and configuration
+- `index.html` — main app UI and logic
 - `README.md` — project documentation
 
 ## Development Notes
-This project is structured for both mobile app development and desktop-friendly project management, making it easier to maintain, build, and extend.
+The app is designed as a local-first editor and uses browser APIs for media handling, timeline editing, and export. It is a good foundation for extending with AI features such as automatic captioning, smart cuts, or richer media generation.
 
 ## License
-This project is under development. Add your preferred license before public release.
+This project is currently under development. Add an appropriate license before public release.
