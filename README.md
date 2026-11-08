@@ -1,6 +1,10 @@
 # JAICK AI Studio
 
-AI-powered browser-based reel editor for short-form video creation.
+<p align="center">
+  <img src="assets/jaick-ai-studio-avatar.svg" width="180" alt="JAICK AI Studio profile avatar: a glowing play button with a sparkle on a dark gradient background" />
+</p>
+
+<p align="center"><strong>AI-powered browser-based reel editor for short-form video creation.</strong></p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Type-Web%20App-blue" alt="Type: Web App" />
@@ -52,9 +56,11 @@ Creating social reels often requires multiple tools and a complex workflow. JAIC
 ## Project structure
 ```text
 jaick-ai-studio/
-├── index.html      # Main app interface and logic
-├── README.md       # Project overview and setup guide
-└── .gitignore      # Git repository configuration (if present)
+├── assets/
+│   └── jaick-ai-studio-avatar.svg  # Project avatar artwork
+├── index.html                      # Main app interface and logic
+├── README.md                       # Project overview and setup guide
+└── .gitignore                      # Git repository configuration (if present)
 ```
 
 ## Run locally

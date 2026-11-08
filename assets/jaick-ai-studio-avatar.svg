@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">JAICK AI Studio avatar</title>
+  <desc id="desc">A bright cyan and violet play symbol with a sparkle, on a dark rounded gradient background.</desc>
+  <defs>
+    <linearGradient id="background" x1="48" y1="24" x2="464" y2="488" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111a31"/>
+      <stop offset="1" stop-color="#080b15"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="146" y1="133" x2="372" y2="379" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#63e6ff"/>
+      <stop offset="1" stop-color="#9c7bff"/>
+    </linearGradient>
+    <filter id="glow" x="66" y="69" width="380" height="380" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="17"/>
+    </filter>
+  </defs>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#background)"/>
+  <circle cx="256" cy="256" r="150" fill="#5adfff" opacity=".16" filter="url(#glow)"/>
+  <circle cx="256" cy="256" r="139" fill="none" stroke="url(#accent)" stroke-opacity=".36" stroke-width="2"/>
+  <circle cx="256" cy="256" r="119" fill="#10182a" stroke="#ffffff" stroke-opacity=".08" stroke-width="2"/>
+  <path d="M222 178.5c0-12.4 13.5-20.1 24.2-13.8l123.6 73.5c10.5 6.2 10.5 21.4 0 27.6l-123.6 73.5c-10.7 6.3-24.2-1.4-24.2-13.8V178.5Z" fill="url(#accent)"/>
+  <path d="m369 116 9.5 25.5L404 151l-25.5 9.5L369 186l-9.5-25.5L334 151l25.5-9.5L369 116Z" fill="#e9fbff"/>
+  <circle cx="153" cy="353" r="7" fill="#74e5ff"/>
+  <circle cx="363" cy="360" r="5" fill="#a894ff"/>
+</svg>
